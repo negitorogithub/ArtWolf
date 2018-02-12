@@ -1,7 +1,7 @@
 package unifar.unifar.artwolf
 
 /**
- * Created by 三悟 on 2018/02/10.
+ * Use this to hold necessary information for player.
  */
 interface IPlayer {
     val name_: String
