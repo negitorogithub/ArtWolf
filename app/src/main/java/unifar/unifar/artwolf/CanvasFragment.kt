@@ -48,7 +48,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         redoWidget = thisView.findViewById(R.id.redoButton)
         nextColorWidget = thisView.findViewById(R.id.nextPlayerButton)
         paintView = thisView.findViewById(R.id.paintView)
-        paintView?.colorKinds = 9
+        paintView?.colorKinds = 7
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
 
         undoWidget?.setOnClickListener {_ -> paintView?.undo() }

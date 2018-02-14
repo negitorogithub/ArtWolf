@@ -71,10 +71,12 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
             currentPath.reset()
             currentPath.moveTo(event.x, event.y )
             invalidate()
+            return true
         }
         MotionEvent.ACTION_MOVE -> {
             currentPath.lineTo(event.x, event.y)
             invalidate()
+            return true
         }
         MotionEvent.ACTION_UP ->{
             currentPath.lineTo(event.x, event.y)
@@ -82,11 +84,11 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
             trajectoriesRedoStack.clear()
             currentPath.reset()
             invalidate()
-
+            return true
         }
 
         }
-        return true
+        return false
     }
 
     override fun onDetachedFromWindow() {
@@ -102,14 +104,21 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
      *
      */
     override fun undo(){
-        trajectoriesRedoStack.add(trajectoriesUndoStack.pop())
+        if (!trajectoriesUndoStack.isEmpty()) {
+            trajectoriesRedoStack.add(trajectoriesUndoStack.pop())
+        }
+        invalidate()
     }
+
     /**
      * Change view to next.(You can't use this before undo())
      *
      */
     override fun redo(){
-        trajectoriesUndoStack.add(trajectoriesRedoStack.pop())
+        if (!trajectoriesRedoStack.isEmpty()) {
+            trajectoriesUndoStack.add(trajectoriesRedoStack.pop())
+        }
+        invalidate()
     }
     override fun changeColorToNext() {
         currentPaint.color = ContextCompat.getColor(rootContext, playerColorPalette.nextColorResId())
