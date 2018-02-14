@@ -5,4 +5,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Redo">Redo</string>
     <string name="Undo">Undo</string>
+    <string name="change_to_next_player">Change to Next Player</string>
 </resources>

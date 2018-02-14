@@ -1,13 +1,14 @@
 package unifar.unifar.artwolf
 
 import android.content.Context
-import android.view.View
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import java.util.*
 
 
@@ -22,28 +23,31 @@ import java.util.*
  */
 
 //contextだけを引数に取らないと怒られるためcolorKindsはセカンダリに回している
-class PaintView(context: Context) :View(context), IPaintView{
+class PaintView(context: Context, attributeSet: AttributeSet) :View(context, attributeSet), IPaintView{
 
-    private var colorKinds = 1
+
+    private var rootContext: Context? = null
     private val trajectoriesRedoStack = Stack<ITrajectory>()
     private val trajectoriesUndoStack = Stack<ITrajectory>()
-    private val currentPath = Path()
-    private val currentPaint = Paint()
-    //Sikatanaku var nisiteiru
+    var colorKinds : Int = 1
+            //xmlからのコンストラクタに対応するためcolorKindsの変更を購読している
+        set(value) {playerColorPalette = PlayersColor(value)}
     private var playerColorPalette: PlayersColor = PlayersColor(colorKinds)
-    constructor(context: Context, colorKinds : Int): this(context){
-        this.colorKinds = colorKinds
+    private val currentPath = Path()
+    val currentPaint = Paint()
+    //仕方なく var にしてる
+    constructor(context: Context, attributeSet: AttributeSet, colorKinds : Int): this(context, attributeSet){
         playerColorPalette = PlayersColor(colorKinds)
     }
-    constructor(context: Context, attributeSet: AttributeSet): this(context)
 
     init {
+        this.colorKinds = colorKinds
         currentPaint.color = Color.BLACK
         currentPaint.style = Paint.Style.STROKE
         currentPaint.strokeJoin = Paint.Join.ROUND
         currentPaint.strokeCap = Paint.Cap.ROUND
-        currentPaint.strokeWidth = 10f
-
+        currentPaint.strokeWidth = 4f
+        rootContext = context
     }
 
     override fun performClick(): Boolean {
@@ -51,6 +55,7 @@ class PaintView(context: Context) :View(context), IPaintView{
     }
 
     override fun onDraw(canvas: Canvas){
+
         for (trajectory: ITrajectory in trajectoriesUndoStack){
             canvas.drawPath(trajectory.path, trajectory.paint)
         }
@@ -84,19 +89,30 @@ class PaintView(context: Context) :View(context), IPaintView{
         return true
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        val context = rootContext
+        if (context is IServeITrajectories){
+            context.onITrajectoriesHistoryIssued(trajectoriesUndoStack)
+        }
+    }
+
     /**
      * Change view to the previous touch.
      *
      */
     override fun undo(){
         trajectoriesRedoStack.add(trajectoriesUndoStack.pop())
-
     }
+    /**
+     * Change view to next.(You can't use this before undo())
+     *
+     */
     override fun redo(){
         trajectoriesUndoStack.add(trajectoriesRedoStack.pop())
     }
-    override fun changePlayerToNext() {
-        currentPaint.color = playerColorPalette.nextColor()
-    }
+    override fun changeColorToNext() {
+        currentPaint.color = ContextCompat.getColor(rootContext, playerColorPalette.nextColorResId())
 
+    }
 }

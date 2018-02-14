@@ -17,7 +17,11 @@ import android.view.ViewGroup
  * Use the [CanvasFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CanvasFragment : Fragment() {
+class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
+    override var paintView: PaintView? = null
+    override var undoWidget: View? = null
+    override var redoWidget: View? = null
+    override var nextColorWidget: View? = null
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -25,7 +29,9 @@ class CanvasFragment : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private var trajectories: Collection<ITrajectory>? = null
+
+            override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments.getString(ARG_PARAM1)
@@ -36,7 +42,23 @@ class CanvasFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_canvas, container, false)
+        val thisView = inflater!!.inflate(R.layout.fragment_canvas, container, false)
+
+        undoWidget = thisView.findViewById(R.id.undoButton)
+        redoWidget = thisView.findViewById(R.id.redoButton)
+        nextColorWidget = thisView.findViewById(R.id.nextPlayerButton)
+        paintView = thisView.findViewById(R.id.paintView)
+        paintView?.colorKinds = 9
+        paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
+
+        undoWidget?.setOnClickListener {_ -> paintView?.undo() }
+        redoWidget?.setOnClickListener {_ -> paintView?.redo() }
+        nextColorWidget?.setOnClickListener { thisWidget ->
+        paintView?.changeColorToNext()
+            paintView?.currentPaint?.color?.let { thisWidget.setBackgroundColor(it) }
+        }
+
+        return thisView
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -59,6 +81,11 @@ class CanvasFragment : Fragment() {
         super.onDetach()
         mListener = null
     }
+
+    override fun onITrajectoriesHistoryIssued(trajectories: Collection<ITrajectory>) {
+        this.trajectories = trajectories
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

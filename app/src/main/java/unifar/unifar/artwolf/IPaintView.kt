@@ -5,7 +5,7 @@ package unifar.unifar.artwolf
  * */
 interface IPaintView {
 
-    fun changePlayerToNext()
+    fun changeColorToNext()
     fun redo()
     fun undo()
 }
