@@ -33,8 +33,7 @@
         android:paddingEnd="@dimen/ItemSidePadding"
         android:paddingStart="@dimen/ItemSidePadding"
         android:src="@drawable/ic_redo_black_48dp"
-        app:layout_constraintBottom_toTopOf="@+id/nextPlayerButton"
-
+        app:layout_constraintBottom_toTopOf="@+id/nextPlayerButton"/>
     <Button
         android:id="@+id/nextPlayerButton"
         android:layout_width="0dp"
