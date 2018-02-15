@@ -2,4 +2,5 @@
 <resources>
     <dimen name="ItemSidePadding">16dp</dimen>
     <dimen name="aboveZ">2dp</dimen>
+    <dimen name="Light_112">112sp</dimen>
 </resources>

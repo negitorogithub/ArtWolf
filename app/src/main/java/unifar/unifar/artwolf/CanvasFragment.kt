@@ -30,6 +30,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     private var mParam1: String? = null
     private var mParam2: String? = null
 
+    private var colorKinds: Int = -1
     private var mListener: OnFragmentInteractionListener? = null
 
     private var trajectories: Collection<ITrajectory>? = null
@@ -51,7 +52,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         redoWidget = thisView.findViewById(R.id.redoButton)
         nextColorWidget = thisView.findViewById(R.id.nextPlayerButton)
         paintView = thisView.findViewById(R.id.paintView)
-        paintView?.colorKinds = 6
+        paintView?.colorKinds = colorKinds
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
 
         undoWidget?.setOnClickListener {_ -> paintView?.undo() }
@@ -78,9 +79,9 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         } else {
             throw RuntimeException(context!!.toString() + " must implement playerNumberReceiver")
         }
-
+        colorKinds = 6
         if (context is IGameDataContain){
-            paintView?.colorKinds = context.gameData.playerCount
+            colorKinds = context.gameData.playerCount
         }
     }
 
@@ -123,11 +124,11 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
          * @return A new instance of fragment CanvasFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): CanvasFragment {
+        fun newInstance(): CanvasFragment {
             val fragment = CanvasFragment()
             val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            //args.putString(ARG_PARAM1, param1)
+            //args.putString(ARG_PARAM2, param2)
             fragment.arguments = args
             return fragment
         }

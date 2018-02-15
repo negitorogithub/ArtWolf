@@ -1,12 +1,12 @@
 package unifar.unifar.artwolf
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 
 
 /**
@@ -16,27 +16,33 @@ import android.view.ViewGroup
  * to handle interaction events.
  */
 class PlayerNumberDecideFragment : Fragment() {
-
-    private var mListener: PlayerNumberReceiver? = null
-
+    private var playerNumberReceiver: PlayerNumberReceiver? = null
+    private var playerNumber:Int = Companion.MIN_PLAYER_NUMBER
+    private lateinit var finishButton: View
+    private lateinit var playerNumberPicker: NumberPicker
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_player_number_decide, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_player_number_decide, container, false)
+        finishButton = view.findViewById(R.id.decisingFinishButton)
+        finishButton.setOnClickListener { _ ->
+            playerNumberReceiver?.onValueDecided(playerNumber)
+            fragmentManager.beginTransaction().remove(this).commit()
+        }
+
+        playerNumberPicker = view.findViewById(R.id.playerNumberPicker)
+        playerNumberPicker.minValue = MIN_PLAYER_NUMBER
+        playerNumberPicker.maxValue = MAX_PLAYER_NUMBER
+        playerNumberPicker.setOnValueChangedListener { _, _, newVal -> playerNumber = newVal }
+
+        return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is PlayerNumberReceiver) {
-            mListener = context
+            playerNumberReceiver = context
         } else {
             throw RuntimeException(context!!.toString() + " must implement playerNumberReceiver")
         }
@@ -44,7 +50,7 @@ class PlayerNumberDecideFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        mListener = null
+        playerNumberReceiver = null
     }
 
     /**
@@ -57,7 +63,23 @@ class PlayerNumberDecideFragment : Fragment() {
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
     interface PlayerNumberReceiver {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onValueDecided(playerNumber: Int)
+    }
+
+    companion object {
+        //三人居ないとゲームが成立しない
+
+        private const val MIN_PLAYER_NUMBER = 3
+        //色に余裕を持って15
+        private const val MAX_PLAYER_NUMBER = 15
+
+        fun newInstance(): PlayerNumberDecideFragment {
+            val fragment = PlayerNumberDecideFragment()
+            val args = Bundle()
+            //args.putString(ARG_PARAM1, param1)
+            //args.putString(ARG_PARAM2, param2)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }// Required empty public constructor
