@@ -41,13 +41,14 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
     }
 
     init {
+        rootContext = context
+
         this.colorKinds = colorKinds
-        currentPaint.color = Color.BLACK
+        currentPaint.color = ContextCompat.getColor(rootContext, playerColorPalette.currentColorId)
         currentPaint.style = Paint.Style.STROKE
         currentPaint.strokeJoin = Paint.Join.ROUND
         currentPaint.strokeCap = Paint.Cap.ROUND
         currentPaint.strokeWidth = 4f
-        rootContext = context
     }
 
     override fun performClick(): Boolean {

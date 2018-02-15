@@ -6,4 +6,10 @@
     <string name="Redo">Redo</string>
     <string name="Undo">Undo</string>
     <string name="change_to_next_player">Change to Next Player</string>
+    <string-array name="builtInThemes">
+        <item>サッカー</item>
+        <item>テニス</item>
+    </string-array>
+
+
 </resources>

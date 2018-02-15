@@ -3,9 +3,9 @@ package unifar.unifar.artwolf
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.FragmentTransaction
 
-class MainActivity : AppCompatActivity(), CanvasFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), CanvasFragment.OnFragmentInteractionListener, IGameDataContain {
+    override var gameData: IGameData = GameData()
     override fun onFragmentInteraction(uri: Uri) {
         //empty for now
     }

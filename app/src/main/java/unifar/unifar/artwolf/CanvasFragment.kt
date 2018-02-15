@@ -14,6 +14,9 @@ import android.view.ViewGroup
  * Activities that contain this fragment must implement the
  * [CanvasFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
+ * Activities that contain this fragment must implement the
+ * [IGameDataContain] interface
+ * to reflect gameData to this fragment.
  * Use the [CanvasFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
@@ -31,7 +34,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
 
     private var trajectories: Collection<ITrajectory>? = null
 
-            override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments.getString(ARG_PARAM1)
@@ -48,7 +51,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         redoWidget = thisView.findViewById(R.id.redoButton)
         nextColorWidget = thisView.findViewById(R.id.nextPlayerButton)
         paintView = thisView.findViewById(R.id.paintView)
-        paintView?.colorKinds = 7
+        paintView?.colorKinds = 6
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
 
         undoWidget?.setOnClickListener {_ -> paintView?.undo() }
@@ -73,7 +76,11 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         if (context is OnFragmentInteractionListener) {
             mListener = context
         } else {
-            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException(context!!.toString() + " must implement playerNumberReceiver")
+        }
+
+        if (context is IGameDataContain){
+            paintView?.colorKinds = context.gameData.playerCount
         }
     }
 

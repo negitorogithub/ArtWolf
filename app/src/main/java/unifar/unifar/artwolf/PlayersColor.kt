@@ -8,6 +8,7 @@ package unifar.unifar.artwolf
  * @param playerNumber The number of the colors to generate.>0
  * @throws IllegalArgumentException
  */
+
 class PlayersColor(private val playerNumber: Int) {
     enum class ColorsToUse(val colorResId: Int){
         Red(R.color.red_500),
@@ -59,11 +60,14 @@ class PlayersColor(private val playerNumber: Int) {
             }
         }
     }
+
     fun nextColorResId(): Int{
         currentColorId = if (paletteForPlayers.indexOf(currentColorId)  < paletteForPlayers.size -1 )
             paletteForPlayers[paletteForPlayers.indexOf(currentColorId) + 1]
             else paletteForPlayers[0]
         return currentColorId
     }
+
+
 
 }

@@ -5,5 +5,5 @@ package unifar.unifar.artwolf
  */
 interface IPlayer {
     val name_: String
-    var votedTo: IPlayer
+    var votedTo: IPlayer?
 }
