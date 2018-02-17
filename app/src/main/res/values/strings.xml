@@ -8,6 +8,7 @@
     <string name="change_to_next_player">Change to Next Player</string>
     <string name="playerNumber">Player number</string>
     <string name="finish">Finish</string>
+    <string name="change_to">Next:%1$s</string>
     <string-array name="builtInThemes">
         <item>サッカー</item>
         <item>テニス</item>

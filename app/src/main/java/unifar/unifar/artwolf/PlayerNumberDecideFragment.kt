@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
+import java.security.cert.CertificateNotYetValidException
 
 
 /**
@@ -23,6 +24,7 @@ class PlayerNumberDecideFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
         val view = inflater!!.inflate(R.layout.fragment_player_number_decide, container, false)
         finishButton = view.findViewById(R.id.decisingFinishButton)
         finishButton.setOnClickListener { _ ->
@@ -34,10 +36,16 @@ class PlayerNumberDecideFragment : Fragment() {
         playerNumberPicker.minValue = MIN_PLAYER_NUMBER
         playerNumberPicker.maxValue = MAX_PLAYER_NUMBER
         playerNumberPicker.setOnValueChangedListener { _, _, newVal -> playerNumber = newVal }
-
+        savedInstanceState?.let { playerNumberPicker.value = it.getInt(CURRENT_VALUE_KEY) }
+        playerNumber = playerNumberPicker.value
         return view
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(CURRENT_VALUE_KEY, playerNumber)
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -72,6 +80,8 @@ class PlayerNumberDecideFragment : Fragment() {
         private const val MIN_PLAYER_NUMBER = 3
         //色に余裕を持って15
         private const val MAX_PLAYER_NUMBER = 15
+
+        private const val CURRENT_VALUE_KEY = "CurrentValue"
 
         fun newInstance(): PlayerNumberDecideFragment {
             val fragment = PlayerNumberDecideFragment()

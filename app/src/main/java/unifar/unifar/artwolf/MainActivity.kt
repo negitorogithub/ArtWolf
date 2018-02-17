@@ -8,6 +8,7 @@ class MainActivity :
         AppCompatActivity(),
         CanvasFragment.OnFragmentInteractionListener,
         PlayerNumberDecideFragment.PlayerNumberReceiver,
+        PlayerListFragment.OnPlayerInfoDecidedListener,
         IGameDataContain {
 
     private val mainActivityContainerResId = R.id.main_activity_container
@@ -20,16 +21,26 @@ class MainActivity :
 
 
     override fun onValueDecided(playerNumber: Int) {
-        gameData.playerCount = playerNumber
-        fragmentManager.beginTransaction().replace(mainActivityContainerResId, CanvasFragment.newInstance()).commit()
+        if (gameData.allPlayers.isEmpty()){
+            for (i in 1..playerNumber){
+                gameData.allPlayers.add(Player())
+            }
+        }
+        gameData.playerCount = gameData.allPlayers.size
+        fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerListFragment.newInstance(1)).commit()
+
     }
 
+    override fun onPlayerInfoDecided(IPlayers: MutableCollection<IPlayer>) {
+        gameData.allPlayers = IPlayers
+        fragmentManager.beginTransaction().replace(mainActivityContainerResId, CanvasFragment.newInstance()).commit()
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        fragmentManager.beginTransaction().add(mainActivityContainerResId, PlayerNumberDecideFragment.newInstance()).commit()
+        savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerNumberDecideFragment.newInstance()).commit()
     }
 }

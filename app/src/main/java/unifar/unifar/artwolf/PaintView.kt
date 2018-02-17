@@ -17,7 +17,6 @@ import java.util.*
  * Redo, Undo are available.
  *
  * @param context The context to show this view.
- * @param colorKinds The number of the colors that are used in changePlayer().
  * @see ITrajectory
 
  */
@@ -123,6 +122,5 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
     }
     override fun changeColorToNext() {
         currentPaint.color = ContextCompat.getColor(rootContext, playerColorPalette.nextColorResId())
-
     }
 }

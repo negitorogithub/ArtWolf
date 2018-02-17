@@ -10,6 +10,6 @@ interface IGameData {
     val theme: String
     val genre: String
     val wolf: IPlayer
-    var votedPlayers: Collection<IPlayer>
-    val allPlayers: Collection<IPlayer>
+    var votedPlayers: MutableCollection<IPlayer>
+    var allPlayers: MutableCollection<IPlayer>
 }

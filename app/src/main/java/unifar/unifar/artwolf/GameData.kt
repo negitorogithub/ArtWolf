@@ -7,8 +7,8 @@ package unifar.unifar.artwolf
 
 class GameData(
         override var isEditedTheme: Boolean = false,
-        override var allPlayers: Collection<IPlayer> = mutableSetOf(),
-        override var votedPlayers: Collection<IPlayer> = mutableSetOf(),
+        override var allPlayers: MutableCollection<IPlayer> = mutableListOf(),
+        override var votedPlayers: MutableCollection<IPlayer> = mutableListOf(),
         override var playerCount: Int = allPlayers.size,
         override var theme: String = "default",
         override var genre: String = "default",
