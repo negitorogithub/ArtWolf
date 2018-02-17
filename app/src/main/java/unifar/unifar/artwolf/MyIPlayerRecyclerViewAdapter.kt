@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import unifar.unifar.artwolf.ApplicationContextHolder.Companion.context
 
 import unifar.unifar.artwolf.PlayerListFragment.OnPlayerInfoDecidedListener
 import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
@@ -32,7 +33,7 @@ class MyIPlayerRecyclerViewAdapter(val IPlayers: MutableList<IPlayer>) : Recycle
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mItem = IPlayers[position]
         holder.myTextWatcher.updatePosition(position)
-        holder.editNameView.text = SpannableStringBuilder(holder.mItem?.name_)
+        holder.editNameView.text = SpannableStringBuilder(holder.mItem?.name_.toString() + (position+1).toString())
     }
 
 inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
@@ -60,9 +61,10 @@ inner class MyTextWatcher : TextWatcher{
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        IPlayers[position].name_ = s ?: "Default"
+        IPlayers[position].name_ = s ?: context.getString(R.string.player) + position
     }
 
 
 }
 }
+
