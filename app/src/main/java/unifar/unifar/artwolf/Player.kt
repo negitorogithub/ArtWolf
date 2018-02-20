@@ -1,9 +1,10 @@
 package unifar.unifar.artwolf
 
 /**
- * Created by 三悟 on 2018/02/14.
+ * This contain all data to play the game.
  */
 class Player : IPlayer {
+    override lateinit var act: Acts
     override var name_: CharSequence = "Player"
     override var votedTo: IPlayer? = null
 }

@@ -10,6 +10,12 @@
     <string name="finish">Finish</string>
     <string name="change_to">Next:%1$s</string>
     <string name="player">Player</string>
+    <string name="default_">Default_</string>
+    <string name="you_are">You are "%1$s"</string>
+    <string name="check">Check</string>
+    <string name="are_you">Are you %1$s?</string>
+    <string name="yes">YES</string>
+    <string name="ok">OK</string>
     <string-array name="builtInThemes">
         <item>サッカー</item>
         <item>テニス</item>

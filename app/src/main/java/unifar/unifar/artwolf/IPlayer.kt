@@ -5,5 +5,6 @@ package unifar.unifar.artwolf
  */
 interface IPlayer {
     var name_: CharSequence
+    var act: Acts
     var votedTo: IPlayer?
 }
