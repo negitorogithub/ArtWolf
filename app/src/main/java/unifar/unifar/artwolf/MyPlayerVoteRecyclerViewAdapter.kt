@@ -4,17 +4,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.RadioButton
 
-import unifar.unifar.artwolf.PlayerVoteFragment.OnListFragmentInteractionListener
+import unifar.unifar.artwolf.PlayerVoteFragment.OnPlayerVoteFragmentFinishListener
 import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
+ * specified [OnPlayerVoteFragmentFinishListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class MyPlayerVoteRecyclerViewAdapter(private val mValues: List<DummyItem>, private val mListener: OnListFragmentInteractionListener?) : RecyclerView.Adapter<MyPlayerVoteRecyclerViewAdapter.ViewHolder>() {
+class MyPlayerVoteRecyclerViewAdapter(private val playerNames: ArrayList<CharSequence>) : RecyclerView.Adapter<MyPlayerVoteRecyclerViewAdapter.ViewHolder>() {
+
+    var lastSelectedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,23 +25,22 @@ class MyPlayerVoteRecyclerViewAdapter(private val mValues: List<DummyItem>, priv
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = mValues[position]
-
-        holder.mView.setOnClickListener {
-            mListener?.onListFragmentInteraction(holder.mItem!!)
-        }
+        holder.radioButton?.isChecked = (position == lastSelectedPosition)
+        holder.radioButton?.text = playerNames[position]
     }
 
     override fun getItemCount(): Int {
-        return mValues.size
+        return playerNames.size
     }
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+    inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
 
-        var mItem: DummyItem? = null
-
+        var radioButton: RadioButton? = mView.findViewById(R.id.player_vote_fragment_radio_button)
         init {
-
+            radioButton?.setOnClickListener {
+                lastSelectedPosition = adapterPosition
+                notifyDataSetChanged()
+            }
         }
 
     }

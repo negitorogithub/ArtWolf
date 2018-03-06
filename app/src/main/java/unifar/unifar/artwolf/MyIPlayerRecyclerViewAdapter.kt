@@ -36,7 +36,7 @@ class MyIPlayerRecyclerViewAdapter(val IPlayers: MutableList<IPlayer>) : Recycle
         holder.editNameView.text = SpannableStringBuilder(holder.mItem?.name_.toString() + (position+1).toString())
     }
 
-inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
 
     val myTextWatcher = MyTextWatcher()
     var editNameView: EditText = mView.findViewById(R.id.iplayer_info_decide_editText)

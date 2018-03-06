@@ -2,7 +2,6 @@ package unifar.unifar.artwolf
 
 /**
  * Use this to implement all necessary parameters used in the game.
- * At least one parameter must be specified.
  */
 
 class GameData(

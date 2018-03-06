@@ -6,22 +6,21 @@ import android.os.Bundle
 
 class MainActivity :
         AppCompatActivity(),
-        CanvasFragment.OnFragmentInteractionListener,
+        CanvasFragment.OnCanvasFinishListener,
         PlayerNumberDecideFragment.PlayerNumberReceiver,
         PlayerListFragment.OnPlayerInfoDecidedListener,
         ShowActsFragment.OnShowActFragmentFinishListener,
         ConfirmFragment.OnFragmentInteractionListener,
+        PlayerVoteFragment.OnPlayerVoteFragmentFinishListener,
         IGameDataContain {
+
 
     private val mainActivityContainerResId = R.id.main_activity_container
     override var gameData: IGameData = GameData()
     private val fragmentManager = supportFragmentManager
 
 
-    override fun onFragmentInteraction(uri: Uri) {
-        //empty for now
-    }
-
+//TODO ConfirmFragmentのFinishListenerの場合わけ
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,9 +87,20 @@ class MainActivity :
         }
     }
 
+    private var playerVoteIndex = 0
 
+    override fun onCanvasFragmentFinish() {
 
+        val playerNames = ArrayList<CharSequence>()
+        gameData.allPlayers.mapTo(playerNames) { it.name_}
+        fragmentManager.beginTransaction().replace(mainActivityContainerResId, ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name_.toString())).commit()
+    }
 
+    override fun onPlayerVoteFragmentFinishListener(position: Int) {
+        gameData.allPlayers.elementAt(playerVoteIndex).votedTo = gameData.allPlayers.elementAt(position)
+        fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerVoteFragment.newInstance(1, playerNames)).commit()
+
+    }
 
 
 

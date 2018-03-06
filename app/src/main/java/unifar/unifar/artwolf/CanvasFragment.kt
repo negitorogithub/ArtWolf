@@ -13,7 +13,7 @@ import android.widget.Button
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [CanvasFragment.OnFragmentInteractionListener] interface
+ * [CanvasFragment.OnCanvasFinishListener] interface
  * to handle interaction events.
  * Activities that contain this fragment must implement the
  * [IGameDataContain] interface
@@ -34,7 +34,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     private lateinit var iPlayers: MutableCollection<IPlayer>
     private var nextIPlayerIndex = 1
     private var colorKinds: Int = -1
-    private var mListener: OnFragmentInteractionListener? = null
+    private var mListener: OnCanvasFinishListener? = null
 
     private var trajectories: Collection<ITrajectory>? = null
 
@@ -80,13 +80,13 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
+            mListener!!.onCanvasFragmentFinish()
         }
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
+        if (context is OnCanvasFinishListener) {
             mListener = context
         } else {
             throw RuntimeException(context!!.toString() + " must implement playerNumberReceiver")
@@ -119,9 +119,8 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
      *
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    interface OnCanvasFinishListener {
+        fun onCanvasFragmentFinish()
     }
 
     companion object {

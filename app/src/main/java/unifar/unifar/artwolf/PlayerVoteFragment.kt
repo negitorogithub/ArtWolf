@@ -9,9 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import unifar.unifar.artwolf.dummy.DummyContent
-import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
+import android.widget.Button
 
 /**
  * A fragment representing a list of Items.
@@ -27,13 +25,15 @@ import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
 class PlayerVoteFragment : Fragment() {
     // TODO: Customize parameters
     private var mColumnCount = 1
-    private var mListener: OnListFragmentInteractionListener? = null
+    private lateinit var playerNames: ArrayList<CharSequence>
+    private var mListener: OnPlayerVoteFragmentFinishListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (arguments != null) {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
+            playerNames = arguments.getCharSequenceArrayList(PLAYER_NAME_COLLECTION_KEY)
         }
     }
 
@@ -41,26 +41,29 @@ class PlayerVoteFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_playervote_list, container, false)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            val context = view.getContext()
-            if (mColumnCount <= 1) {
-                view.layoutManager = LinearLayoutManager(context)
-            } else {
-                view.layoutManager = GridLayoutManager(context, mColumnCount)
-            }
-            view.adapter = MyPlayerVoteRecyclerViewAdapter(DummyContent.ITEMS, mListener)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_player_vote_recycler_view)
+        if (mColumnCount <= 1) {
+            recyclerView.layoutManager = LinearLayoutManager(context)
+        } else {
+            recyclerView.layoutManager = GridLayoutManager(context, mColumnCount)
         }
+        recyclerView.adapter = MyPlayerVoteRecyclerViewAdapter(playerNames)
+
+        val finishButton = view.findViewById<Button>(R.id.fragment_player_vote_finish_button)
+        finishButton.setOnClickListener{
+                mListener?.onPlayerVoteFragmentFinishListener((recyclerView.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition)
+            }
+
         return view
     }
 
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is OnPlayerVoteFragmentFinishListener) {
             mListener = context
         } else {
-            throw RuntimeException(context!!.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException(context!!.toString() + " must implement OnPlayerVoteFragmentFinishListener")
         }
     }
 
@@ -78,21 +81,22 @@ class PlayerVoteFragment : Fragment() {
      *
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
-    interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem)
+    interface OnPlayerVoteFragmentFinishListener {
+        fun onPlayerVoteFragmentFinishListener(position: Int)
     }
 
     companion object {
 
         // TODO: Customize parameter argument names
         private val ARG_COLUMN_COUNT = "column-count"
+        private val PLAYER_NAME_COLLECTION_KEY = "playerNameCollectionKey"
 
         // TODO: Customize parameter initialization
-        fun newInstance(columnCount: Int): PlayerVoteFragment {
+        fun newInstance(columnCount: Int, playerNames : ArrayList<CharSequence>): PlayerVoteFragment {
             val fragment = PlayerVoteFragment()
             val args = Bundle()
             args.putInt(ARG_COLUMN_COUNT, columnCount)
+            args.putCharSequenceArrayList(PLAYER_NAME_COLLECTION_KEY, playerNames)
             fragment.arguments = args
             return fragment
         }
