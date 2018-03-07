@@ -6,10 +6,12 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 
 /**
  * A fragment representing a list of Items.
@@ -51,8 +53,13 @@ class PlayerVoteFragment : Fragment() {
 
         val finishButton = view.findViewById<Button>(R.id.fragment_player_vote_finish_button)
         finishButton.setOnClickListener{
+            if((recyclerView.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition > -1) {
                 mListener?.onPlayerVoteFragmentFinishListener((recyclerView.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition)
+            }else{
+                Toast.makeText(activity, getString(R.string.you_must_choose_person), Toast.LENGTH_LONG).show()
             }
+
+        }
 
         return view
     }

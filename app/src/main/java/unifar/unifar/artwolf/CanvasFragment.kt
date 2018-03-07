@@ -1,13 +1,13 @@
 package unifar.unifar.artwolf
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 
 
 /**
@@ -49,28 +49,32 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
             // Inflate the layout for this fragment
-            val thisView = inflater!!.inflate(R.layout.fragment_canvas, container, false)
-            undoWidget = thisView.findViewById(R.id.undoButton)
-            redoWidget = thisView.findViewById(R.id.redoButton)
-            nextColorWidget = thisView.findViewById<Button?>(R.id.nextPlayerButton)
-            paintView = thisView.findViewById(R.id.paintView)
-            paintView?.colorKinds = colorKinds
-            paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
 
-            undoWidget?.setOnClickListener { _ -> paintView?.undo() }
-            redoWidget?.setOnClickListener {_ -> paintView?.redo() }
+        val thisView = inflater!!.inflate(R.layout.fragment_canvas, container, false)
 
-            nextColorWidget?.setOnClickListener { thisWidget ->
-                if (iPlayers.size -1 > nextIPlayerIndex) {
-                    nextIPlayerIndex++
-                } else{
-                    nextIPlayerIndex = 0
-                }
-                (nextColorWidget as Button?)?.text = getString(R.string.change_to, iPlayers.elementAt(nextIPlayerIndex).name_)
-
-                paintView?.changeColorToNext()
-                paintView?.currentPaint?.color?.let { thisWidget.setBackgroundColor(it) }
+        undoWidget = thisView.findViewById(R.id.undoButton)
+        redoWidget = thisView.findViewById(R.id.redoButton)
+        nextColorWidget = thisView.findViewById<Button?>(R.id.nextPlayerButton)
+        paintView = thisView.findViewById(R.id.paintView)
+        paintView?.colorKinds = colorKinds
+        paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
+        undoWidget?.setOnClickListener { _ -> paintView?.undo() }
+        redoWidget?.setOnClickListener {_ -> paintView?.redo() }
+        nextColorWidget?.setOnClickListener { thisWidget ->
+            if (iPlayers.size -1 > nextIPlayerIndex) {
+                nextIPlayerIndex++
+            } else{
+                nextIPlayerIndex = 0
             }
+            (nextColorWidget as Button?)?.text = getString(R.string.change_to, iPlayers.elementAt(nextIPlayerIndex).name_)
+            paintView?.changeColorToNext()
+            paintView?.currentPaint?.color?.let { thisWidget.setBackgroundColor(it) }
+        }
+        val finishButton = thisView.findViewById<ImageView>(R.id.canvas_fragment_finish_button)
+        finishButton.setOnClickListener{
+            fragmentManager.beginTransaction().detach(this).commit()
+            onFinishButtonPressed()
+        }
         //初期設定
         (nextColorWidget as Button?)?.text = getString(R.string.change_to, iPlayers.elementAt(nextIPlayerIndex).name_)
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
@@ -78,7 +82,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
+    fun onFinishButtonPressed() {
         if (mListener != null) {
             mListener!!.onCanvasFragmentFinish()
         }

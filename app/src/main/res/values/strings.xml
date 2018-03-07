@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Redo">Redo</string>
     <string name="Undo">Undo</string>
-    <string name="change_to_next_player">Change to Next Player</string>
+    <string name="change_to_next">Next: </string>
     <string name="playerNumber">Player number</string>
     <string name="finish">Finish</string>
     <string name="change_to">Next:%1$s</string>
@@ -16,6 +16,10 @@
     <string name="are_you">Are you %1$s?</string>
     <string name="yes">YES</string>
     <string name="ok">OK</string>
+    <string name="you_must_choose_person">You must choose a person.</string>
+    <string name="artist_detail">You draw a picture of %1$s, but don\'t tell the wolf that.</string>
+    <string name="wolf_detail">You don\'t know what to draw, so suggest it and pretend to know it.</string>
+    <string name="Done">Done</string>
     <string-array name="builtInThemes">
         <item>サッカー</item>
         <item>テニス</item>

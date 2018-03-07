@@ -7,7 +7,7 @@ package unifar.unifar.artwolf
 interface IGameData {
     var isEditedTheme: Boolean
     var playerCount: Int
-    val theme: String
+    var theme: String
     val genre: String
     val wolf: IPlayer
     var votedPlayers: MutableCollection<IPlayer>

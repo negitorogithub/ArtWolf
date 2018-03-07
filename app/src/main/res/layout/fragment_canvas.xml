@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -28,13 +29,13 @@
         android:layout_gravity="center|start|bottom"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:translationZ="@dimen/aboveZ"
         android:contentDescription="@string/Undo"
         android:paddingEnd="@dimen/ItemSidePadding"
         android:paddingStart="@dimen/ItemSidePadding"
         android:src="@drawable/ic_undo_black_48dp"
+
         app:layout_constraintBottom_toTopOf="@+id/nextPlayerButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/nextPlayerButton" />
 
 
     <ImageView
@@ -44,21 +45,32 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:translationZ="@dimen/aboveZ"
         android:contentDescription="@string/Redo"
         android:paddingEnd="@dimen/ItemSidePadding"
         android:paddingStart="@dimen/ItemSidePadding"
         android:src="@drawable/ic_redo_black_48dp"
+
         app:layout_constraintBottom_toTopOf="@+id/nextPlayerButton"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@+id/nextPlayerButton" />
+
+    <ImageView
+        android:id="@+id/canvas_fragment_finish_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/Done"
+        android:src="@drawable/ic_done_black_48dp"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/nextPlayerButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_gravity="bottom|center"
-        android:textSize="28sp"
         android:layout_marginBottom="8dp"
-        android:text="@string/change_to_next_player"
+        android:layout_marginEnd="8dp"
+        android:text="@string/change_to_next"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

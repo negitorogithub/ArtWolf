@@ -23,6 +23,7 @@ class ShowActsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var name: String? = null
     private var act: String? = null
+    private var theme: String? = null
 
     private var onFinishListener: OnShowActFragmentFinishListener? = null
 
@@ -31,6 +32,7 @@ class ShowActsFragment : Fragment() {
         if (arguments != null) {
             name = arguments.getString(PLAYER_NAME_KEY)
             act = arguments.getString(ACT_KEY)
+            theme = arguments.getString(THEME_KEY)
         }
     }
 
@@ -39,9 +41,18 @@ class ShowActsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_show_acts, container, false)
         val nameView = view.findViewById<TextView>(R.id.nameTextView)
-        val finishButton = view.findViewById<Button>(R.id.fragment_show_act_finish_button)
         nameView.text = getString(R.string.you_are, act)
+        val finishButton = view.findViewById<Button>(R.id.fragment_show_act_finish_button)
         finishButton.setOnClickListener { onFinishButtonPressed() }
+        val detailTextView = view.findViewById<TextView>(R.id.act_detail_and_theme_text)
+        when (act) {
+            Acts.Artist.name ->  {
+                detailTextView.text = getString(R.string.artist_detail, theme)
+            }
+            Acts.Wolf.name ->  {
+                detailTextView.text = getString(R.string.wolf_detail)
+            }
+        }
         return view
     }
 
@@ -86,6 +97,7 @@ class ShowActsFragment : Fragment() {
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private const val PLAYER_NAME_KEY = "playerKey"
         private const val ACT_KEY = "actKey"
+        private const val THEME_KEY = "themeKey"
 
         /**
          * Use this factory method to create a new instance of
@@ -96,11 +108,13 @@ class ShowActsFragment : Fragment() {
          * @return A new instance of fragment ShowActsFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(playerName: String, act: String): ShowActsFragment {
+        fun newInstance(playerName: String, act: Acts, theme: String): ShowActsFragment {
             val fragment = ShowActsFragment()
             val args = Bundle()
             args.putString(PLAYER_NAME_KEY, playerName)
-            args.putString(ACT_KEY, act)
+            args.putString(ACT_KEY, act.name)
+            args.putString(THEME_KEY, theme)
+
             fragment.arguments = args
             return fragment
         }

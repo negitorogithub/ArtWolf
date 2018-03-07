@@ -19,10 +19,7 @@ import android.widget.TextView
  */
 class ConfirmFragment : Fragment() {
 
-    // TODO: Rename and change types of parameters
     private var name: String? = null
-
-    private var onFinishListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +38,12 @@ class ConfirmFragment : Fragment() {
         return view
     }
 
+
+    private var onFinishListener: OnFragmentInteractionListener? = null
+
     private fun onButtonPressed() {
         if (onFinishListener != null) {
-            onFinishListener!!.onConfirmFragmentFinish()
+            onFinishListener!!.onConfirmFragmentFinish(tag)
         }
     }
 
@@ -71,8 +71,7 @@ class ConfirmFragment : Fragment() {
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onConfirmFragmentFinish()
+        fun onConfirmFragmentFinish(tag: String)
     }
 
     companion object {
@@ -87,7 +86,6 @@ class ConfirmFragment : Fragment() {
          * @param name The name to confirm in this fragment.
          * @return A new instance of fragment ConfirmFragment.
          */
-        // TODO: Rename and change types and number of parameters
         fun newInstance(name: String): ConfirmFragment {
             val fragment = ConfirmFragment()
             val args = Bundle()
