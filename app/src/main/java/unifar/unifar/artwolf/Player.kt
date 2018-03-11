@@ -6,5 +6,7 @@ package unifar.unifar.artwolf
 class Player : IPlayer {
     override lateinit var act: Acts
     override var name_: CharSequence = "Player"
-    override var votedTo: IPlayer? = null
+    override lateinit var votedTo: IPlayer
+    override var votedCount: Int = 0
+
 }

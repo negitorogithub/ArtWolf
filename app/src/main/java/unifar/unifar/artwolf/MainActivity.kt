@@ -1,5 +1,6 @@
 package unifar.unifar.artwolf
 
+import android.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
@@ -11,7 +12,9 @@ class MainActivity :
         ShowActsFragment.OnShowActFragmentFinishListener,
         ConfirmFragment.OnFragmentInteractionListener,
         PlayerVoteFragment.OnPlayerVoteFragmentFinishListener,
+        ResultFragment.OnFragmentInteractionListener,
         IGameDataContain {
+
 
 
     private val mainActivityContainerResId = R.id.main_activity_container
@@ -117,19 +120,36 @@ class MainActivity :
     }
 
     override fun onPlayerVoteFragmentFinishListener(position: Int) {
+        gameData.allPlayers.elementAt(playerVoteIndex).votedTo = gameData.allPlayers.elementAt(position)
         playerVoteIndex++
         if (playerVoteIndex < gameData.allPlayers.size) {
-            gameData.allPlayers.elementAt(playerVoteIndex).votedTo = gameData.allPlayers.elementAt(position)
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
                     ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name_.toString()),
                     PLAYER_VOTE_TAG
             ).commit()
         }else{
+            val votedPlayers = ArrayList<IPlayer>()
+            gameData.allPlayers.mapTo(votedPlayers){it.votedTo}
+            for (votedPlayer in votedPlayers){
+                votedPlayer.votedCount++
+            }
+            val mostVotedPlayer = gameData.allPlayers.maxBy { it.votedCount }
+            var winnerAct :Acts = Acts.Artist
+            when (mostVotedPlayer?.act) {
+                Acts.Artist -> winnerAct = Acts.Wolf
+                Acts.Wolf -> winnerAct = Acts.Artist
+            }
 
+            fragmentManager.beginTransaction().replace(
+                    mainActivityContainerResId,
+                    ResultFragment.newInstance(winnerAct)
+            ).commit()
         }
     }
 
+    override fun onFragmentInteraction(act: Acts, isReversed: Boolean) {
 
+    }
 
 }
