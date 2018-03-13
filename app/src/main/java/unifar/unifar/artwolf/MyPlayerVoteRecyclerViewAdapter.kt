@@ -8,6 +8,7 @@ import android.widget.RadioButton
 
 import unifar.unifar.artwolf.PlayerVoteFragment.OnPlayerVoteFragmentFinishListener
 import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
+import kotlin.CharSequence
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -17,6 +18,10 @@ import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
 class MyPlayerVoteRecyclerViewAdapter(private val playerNames: ArrayList<CharSequence>) : RecyclerView.Adapter<MyPlayerVoteRecyclerViewAdapter.ViewHolder>() {
 
     var lastSelectedPosition = -1
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

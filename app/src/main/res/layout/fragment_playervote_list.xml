@@ -10,10 +10,10 @@
     <Button
         android:id="@+id/fragment_player_vote_finish_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/smallButtonHeight"
         android:layout_marginBottom="16dp"
         android:text="@string/ok"
-        android:textSize="@dimen/Regular_56"
+        android:textSize="@dimen/Regular_34"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

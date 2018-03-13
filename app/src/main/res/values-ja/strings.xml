@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">お絵かき人狼</string>
+
+    <string name="artist">芸術家</string>
+    <string name="wolf">人狼</string>
+    <string name="Redo">次へ</string>
+    <string name="Undo">戻る</string>
+    <string name="change_to_next">次:</string>
+    <string name="playerNumber">プレイヤー数</string>
+    <string name="finish">終了</string>
+    <string name="change_to">次:%1$s</string>
+    <string name="player">プレイヤー</string>
+    <string name="default_">デフォルト</string>
+    <string name="you_are">あなたは\n「%1$s」です</string>
+    <string name="check">チェック</string>
+    <string name="are_you">あなたは%1$sですか？</string>
+    <string name="yes">はい</string>
+    <string name="you_must_choose_person">人狼だと思う人を一人選んでください</string>
+    <string name="artist_detail">%1$sの絵を描きましょう。しかし、人狼に何を書いているか悟られてはいけません。</string>
+    <string name="wolf_detail">"あなたはテーマを知らないので、何を書いているのか予想して、知っているふりをしましょう。 "</string>
+    <string name="Done">完了</string>
+    <string name="winner_is">"勝者: "</string>
+    <string name="winnerAct">"%1$s"</string>
+    <string name="reversalRule">"逆転チャンス!!もしも人狼が正しいテーマを答えられたら、人狼の勝利です! "</string>
+    <string name="did_wolf_answer_correct_theme">"人狼はテーマを当てられましたか？ "</string>
+    <string name="the_theme_is">"テーマ: "</string>
+    <string name="themeShow">%1$s</string>
+    <string name="hello_blank_fragment">haro--</string>
+    <string name="complete">完了</string>
+
+    <string-array name="builtInThemes">
+        <item>サッカー</item>
+        <item>テニス</item>
+    </string-array>
+</resources>

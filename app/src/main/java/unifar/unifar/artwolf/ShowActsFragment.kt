@@ -46,17 +46,16 @@ class ShowActsFragment : Fragment() {
         finishButton.setOnClickListener { onFinishButtonPressed() }
         val detailTextView = view.findViewById<TextView>(R.id.act_detail_and_theme_text)
         when (act) {
-            Acts.Artist.name ->  {
+            Acts.Artist.toString(resources) ->  {
                 detailTextView.text = getString(R.string.artist_detail, theme)
             }
-            Acts.Wolf.name ->  {
+            Acts.Wolf.toString(resources) ->  {
                 detailTextView.text = getString(R.string.wolf_detail)
             }
         }
         return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     private fun onFinishButtonPressed() {
         if (onFinishListener != null) {
             onFinishListener!!.onShowActFragmentFinish()
@@ -112,7 +111,7 @@ class ShowActsFragment : Fragment() {
             val fragment = ShowActsFragment()
             val args = Bundle()
             args.putString(PLAYER_NAME_KEY, playerName)
-            args.putString(ACT_KEY, act.name)
+            args.putString(ACT_KEY, act.toString(ApplicationContextHolder.context.resources))
             args.putString(THEME_KEY, theme)
 
             fragment.arguments = args

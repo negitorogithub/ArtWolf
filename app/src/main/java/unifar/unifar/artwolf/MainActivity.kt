@@ -1,8 +1,10 @@
 package unifar.unifar.artwolf
 
-import android.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
+import java.util.*
+
 
 class MainActivity :
         AppCompatActivity(),
@@ -24,6 +26,9 @@ class MainActivity :
     companion object {
         private const val PLAYER_VOTE_TAG = "playerVoteTag"
         private const val SHOW_ACT_TAG = "showActTag"
+        private const val GAME_DATA_KEY = "gameDataKey"
+        private const val SHOW_ACT_INDEX_KEY = "showActIndexKey"
+        private const val PLAYER_VOTE_KEY = "playerVoteKey"
     }
 
     init {
@@ -32,29 +37,42 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerNumberDecideFragment.newInstance()).commit()
         gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
+        savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerNumberDecideFragment.newInstance()).commit()
+        savedInstanceState?.let { gameData = savedInstanceState.getSerializable(GAME_DATA_KEY) as IGameData}
+        savedInstanceState?.let { showActIndex = savedInstanceState.getInt(SHOW_ACT_INDEX_KEY) }
+        savedInstanceState?.let { playerVoteIndex = savedInstanceState.getInt(PLAYER_VOTE_KEY) }
+
+    }
+
+
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putSerializable(GAME_DATA_KEY, gameData)
+        outState?.putInt(SHOW_ACT_INDEX_KEY, showActIndex)
+        outState?.putInt(PLAYER_VOTE_KEY, playerVoteIndex)
     }
 
     override fun onValueDecided(playerNumber: Int) {
         if (gameData.allPlayers.isEmpty()){
             for (i in 1..playerNumber){
-                gameData.allPlayers.add(Player())
+                gameData.allPlayers.add(Player().apply { name = getString(R.string.player) + i.toString() })
             }
         }
         gameData.playerCount = gameData.allPlayers.size
 
         fragmentManager.beginTransaction().replace(
                 mainActivityContainerResId,
-                PlayerListFragment.newInstance(1)
+                PlayerListFragment.newInstance(1, gameData.allPlayers.map { it.name.toString() }.toMutableList())
         ).commit()
 
     }
 
     private var showActIndex: Int = 0
 
-    override fun onPlayerInfoDecided(IPlayers: MutableCollection<IPlayer>) {
-        gameData.allPlayers = IPlayers
+    override fun onPlayerInfoDecided(allNames: Collection<CharSequence>) {
+        gameData.allPlayers.forEachIndexed { index, iPlayer -> iPlayer.name = allNames.elementAt(index) }
         val actsList = mutableListOf(Acts.Wolf)
         if (gameData.allPlayers.size >= 3){
             for (i in 2..gameData.allPlayers.size){
@@ -69,7 +87,7 @@ class MainActivity :
 
         fragmentManager.beginTransaction().replace(
                 mainActivityContainerResId,
-                ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name_.toString()),
+                ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
                 SHOW_ACT_TAG
         ).commit()
 
@@ -82,10 +100,10 @@ class MainActivity :
         if (tag == SHOW_ACT_TAG) {
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
-                    ShowActsFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name_.toString(), gameData.allPlayers.elementAt(showActIndex).act, gameData.theme)).commit()
+                    ShowActsFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString(), gameData.allPlayers.elementAt(showActIndex).act, gameData.theme)).commit()
         }
-        val playerNames = ArrayList<CharSequence>()
-        gameData.allPlayers.mapTo(playerNames) { it.name_}
+        val playerNames = ArrayList<kotlin.CharSequence>()
+        gameData.allPlayers.mapTo(playerNames) { it.name}
         if (tag == PLAYER_VOTE_TAG){
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
@@ -99,22 +117,22 @@ class MainActivity :
         if (showActIndex < gameData.allPlayers.size){
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
-                    ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name_.toString()),
+                    ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
                     SHOW_ACT_TAG
             ).commit()
         }else{
-            fragmentManager.beginTransaction().replace(mainActivityContainerResId, CanvasFragment.newInstance()).commit()
+            fragmentManager.beginTransaction().replace(mainActivityContainerResId, CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray())).commit()
         }
     }
 
 
     override fun onCanvasFragmentFinish() {
 
-        val playerNames = ArrayList<CharSequence>()
-        gameData.allPlayers.mapTo(playerNames) { it.name_}
+        val playerNames = ArrayList<kotlin.CharSequence>()
+        gameData.allPlayers.mapTo(playerNames) { it.name}
         fragmentManager.beginTransaction().replace(
                 mainActivityContainerResId,
-                ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name_.toString()),
+                ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name.toString()),
                 PLAYER_VOTE_TAG
         ).commit()
     }
@@ -125,7 +143,7 @@ class MainActivity :
         if (playerVoteIndex < gameData.allPlayers.size) {
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
-                    ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name_.toString()),
+                    ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name.toString()),
                     PLAYER_VOTE_TAG
             ).commit()
         }else{
@@ -134,11 +152,19 @@ class MainActivity :
             for (votedPlayer in votedPlayers){
                 votedPlayer.votedCount++
             }
-            val mostVotedPlayer = gameData.allPlayers.maxBy { it.votedCount }
-            var winnerAct :Acts = Acts.Artist
-            when (mostVotedPlayer?.act) {
-                Acts.Artist -> winnerAct = Acts.Wolf
-                Acts.Wolf -> winnerAct = Acts.Artist
+            val mostVotedPlayerList = mutableListOf<IPlayer>(Player())
+            for (player in gameData.allPlayers){
+                if (player.votedCount > mostVotedPlayerList[0].votedCount){
+                    mostVotedPlayerList.clear()
+                    mostVotedPlayerList.add(player)
+                }
+                if (player.votedCount == mostVotedPlayerList[0].votedCount){
+                    mostVotedPlayerList.add(player)
+                }
+            }
+            val winnerAct = when (mostVotedPlayerList.map { it.act  }.contains(Acts.Artist)) {
+                true -> Acts.Wolf
+                false -> Acts.Artist
             }
 
             fragmentManager.beginTransaction().replace(
@@ -150,6 +176,11 @@ class MainActivity :
 
     override fun onFragmentInteraction(act: Acts, isReversed: Boolean) {
 
+        when(act){
+            Acts.Artist -> if (isReversed) fragmentManager.beginTransaction().replace(mainActivityContainerResId, ResultFragment.newInstance(Acts.Wolf)).commit()
+                           else finish()
+            Acts.Wolf -> finish()
+        }
     }
 
 }

@@ -27,23 +27,25 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     override var redoWidget: View? = null
     override var nextColorWidget: View? = null
 
-    // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
     private var mParam2: String? = null
 
-    private lateinit var iPlayers: MutableCollection<IPlayer>
+    private var playerNames: List<CharSequence> = listOf("")
     private var nextIPlayerIndex = 1
     private var colorKinds: Int = -1
     private var mListener: OnCanvasFinishListener? = null
 
     private var trajectories: Collection<ITrajectory>? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
+            playerNames = arguments.getCharSequenceArray(IPLAYERS_KEY).toList()
         }
+        savedInstanceState?.let { nextIPlayerIndex = savedInstanceState.getInt(NEXT_PLAYER_INDEX_KEY) }
+        savedInstanceState?.let { colorKinds = savedInstanceState.getInt(COLOR_KINDS_KEY) }
+        savedInstanceState?.let { playerNames = savedInstanceState.getCharSequenceArray(IPLAYERS_KEY).toList() }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -57,16 +59,25 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         nextColorWidget = thisView.findViewById<Button?>(R.id.nextPlayerButton)
         paintView = thisView.findViewById(R.id.paintView)
         paintView?.colorKinds = colorKinds
+        for (i in 1..
+        when(nextIPlayerIndex == 0){
+            true -> colorKinds-1
+            false-> nextIPlayerIndex - 1
+        }){
+            paintView?.changeColorToNext()
+        }
+
+
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
         undoWidget?.setOnClickListener { _ -> paintView?.undo() }
         redoWidget?.setOnClickListener {_ -> paintView?.redo() }
         nextColorWidget?.setOnClickListener { thisWidget ->
-            if (iPlayers.size -1 > nextIPlayerIndex) {
+            if (playerNames.size -1 > nextIPlayerIndex) {
                 nextIPlayerIndex++
             } else{
                 nextIPlayerIndex = 0
             }
-            (nextColorWidget as Button?)?.text = getString(R.string.change_to, iPlayers.elementAt(nextIPlayerIndex).name_)
+            (nextColorWidget as Button?)?.text = getString(R.string.change_to, playerNames.elementAt(nextIPlayerIndex))
             paintView?.changeColorToNext()
             paintView?.currentPaint?.color?.let { thisWidget.setBackgroundColor(it) }
         }
@@ -76,13 +87,12 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
             onFinishButtonPressed()
         }
         //初期設定
-        (nextColorWidget as Button?)?.text = getString(R.string.change_to, iPlayers.elementAt(nextIPlayerIndex).name_)
+        (nextColorWidget as Button?)?.text = getString(R.string.change_to, playerNames.elementAt(nextIPlayerIndex))
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
         return thisView
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onFinishButtonPressed() {
+    private fun onFinishButtonPressed() {
         if (mListener != null) {
             mListener!!.onCanvasFragmentFinish()
         }
@@ -98,10 +108,18 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
 
         if (context is IGameDataContain){
             colorKinds = context.gameData.playerCount
-            iPlayers = context.gameData.allPlayers
         } else {
             throw NotImplementedError(context.toString() + " must implement IGameDataContain")
         }
+    }
+
+
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(NEXT_PLAYER_INDEX_KEY, nextIPlayerIndex)
+        outState?.putInt(COLOR_KINDS_KEY, colorKinds)
+        outState?.putCharSequenceArray(IPLAYERS_KEY, playerNames.toTypedArray())
     }
 
     override fun onDetach() {
@@ -128,11 +146,10 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     }
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
-
+        private const val NEXT_PLAYER_INDEX_KEY = "nextPlayerIndexKey"
+        private const val COLOR_KINDS_KEY = "colorKindsKey"
+        private const val IPLAYERS_KEY = "iPlayersKey"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -141,12 +158,10 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
          * @param param2 Parameter 2.
          * @return A new instance of fragment CanvasFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        fun newInstance(): CanvasFragment {
+        fun newInstance(playerNames: Array<CharSequence>): CanvasFragment {
             val fragment = CanvasFragment()
             val args = Bundle()
-            //args.putString(ARG_PARAM1, param1)
-            //args.putString(ARG_PARAM2, param2)
+            args.putCharSequenceArray(IPLAYERS_KEY, playerNames)
             fragment.arguments = args
             return fragment
         }

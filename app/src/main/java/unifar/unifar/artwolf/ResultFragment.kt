@@ -28,11 +28,13 @@ class ResultFragment : Fragment(){
     private var isReversed = false
     private var mListener: OnFragmentInteractionListener? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             act = arguments.getSerializable(ACT_KEY) as Acts
         }
+        savedInstanceState?.let{savedInstanceState.getBoolean(IS_REVERSED_KEY)}
     }
 
 
@@ -43,8 +45,8 @@ class ResultFragment : Fragment(){
         val view = inflater!!.inflate(R.layout.fragment_result, container, false)
 
         val resultActTextView = view.findViewById<TextView>(R.id.resultFragmentActText)
-        resultActTextView.text = getString(R.string.winnerAct, act.name)
-        val isReversedCheckBox = view.findViewById<CheckBox>(R.id.resultFragmentCheckBox)
+        resultActTextView.text = getString(R.string.winnerAct, act.toString(resources))
+        val isReversedCheckBox = view.findViewById<CheckBox>(R.id.resultFragmentCheckBox).apply { isChecked = isReversed }
         val showThemeTextView = view.findViewById<TextView>(R.id.resultFragmentThemeLatterTextView)
         showThemeTextView.text = getString(R.string.themeShow, theme)
 
@@ -67,6 +69,10 @@ class ResultFragment : Fragment(){
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putBoolean(IS_REVERSED_KEY, isReversed)
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -102,9 +108,9 @@ class ResultFragment : Fragment(){
     }
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ACT_KEY = "actKey"
+        private const val ACT_KEY = "actKey"
+        private const val IS_REVERSED_KEY = "isReversedKey"
 
         /**
          * Use this factory method to create a new instance of
@@ -114,7 +120,6 @@ class ResultFragment : Fragment(){
          * @param param2 Parameter 2.
          * @return A new instance of fragment ResultFragment.
          */
-        // TODO: Rename and change types and number of parameters
         fun newInstance(act: Acts): ResultFragment {
             val fragment = ResultFragment()
             val args = Bundle()
@@ -123,4 +128,4 @@ class ResultFragment : Fragment(){
             return fragment
         }
     }
-}// Required empty public constructor
+}

@@ -2,9 +2,9 @@ package unifar.unifar.artwolf
 
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +12,16 @@ import android.widget.EditText
 import unifar.unifar.artwolf.ApplicationContextHolder.Companion.context
 
 import unifar.unifar.artwolf.PlayerListFragment.OnPlayerInfoDecidedListener
-import unifar.unifar.artwolf.dummy.DummyContent.DummyItem
+import kotlin.CharSequence
 
 /**
- * [RecyclerView.Adapter] that can display a [IPlayer] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [CharSequence] and makes a call to the
  * specified [OnPlayerInfoDecidedListener].
  */
-class MyIPlayerRecyclerViewAdapter(val IPlayers: MutableList<IPlayer>) : RecyclerView.Adapter<MyIPlayerRecyclerViewAdapter.ViewHolder>() {
+class MyIPlayerRecyclerViewAdapter(val allNames: MutableList<CharSequence>) : RecyclerView.Adapter<MyIPlayerRecyclerViewAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
-        return IPlayers.size
+        return allNames.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,16 +31,16 @@ class MyIPlayerRecyclerViewAdapter(val IPlayers: MutableList<IPlayer>) : Recycle
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = IPlayers[position]
+        holder.mItem = allNames[position]
         holder.myTextWatcher.updatePosition(position)
-        holder.editNameView.text = SpannableStringBuilder(holder.mItem?.name_.toString() + (position+1).toString())
+        holder.editNameView.text = SpannableStringBuilder(holder.mItem.toString())
     }
 
 inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
 
     val myTextWatcher = MyTextWatcher()
     var editNameView: EditText = mView.findViewById(R.id.iplayer_info_decide_editText)
-    var mItem: IPlayer? = null
+    var mItem: CharSequence? = null
     init {
         editNameView.addTextChangedListener(myTextWatcher)
     }
@@ -48,7 +48,7 @@ inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
 }
 
 inner class MyTextWatcher : TextWatcher{
-    var position = -1
+    private var position = -1
     fun updatePosition(position: Int) {
         this.position = position
     }
@@ -61,7 +61,8 @@ inner class MyTextWatcher : TextWatcher{
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        IPlayers[position].name_ = s ?: context.getString(R.string.player) + position
+        allNames[position] = s ?: "Default"
+        Log.d("artWolf", allNames[position].toString())
     }
 
 

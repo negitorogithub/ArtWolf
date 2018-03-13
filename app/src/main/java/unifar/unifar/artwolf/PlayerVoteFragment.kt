@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import kotlin.CharSequence
 
 /**
  * A fragment representing a list of Items.
@@ -29,7 +29,8 @@ class PlayerVoteFragment : Fragment() {
     private var mColumnCount = 1
     private lateinit var playerNames: ArrayList<CharSequence>
     private var mListener: OnPlayerVoteFragmentFinishListener? = null
-
+    private var mLastSelectedPosition = -1
+    private var recyclerView: RecyclerView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,24 +38,24 @@ class PlayerVoteFragment : Fragment() {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
             playerNames = arguments.getCharSequenceArrayList(PLAYER_NAME_COLLECTION_KEY)
         }
+        savedInstanceState?.let {mLastSelectedPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION_KEY) }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_playervote_list, container, false)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_player_vote_recycler_view)
+        recyclerView = view.findViewById(R.id.fragment_player_vote_recycler_view)
         if (mColumnCount <= 1) {
-            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView?.layoutManager = LinearLayoutManager(context)
         } else {
-            recyclerView.layoutManager = GridLayoutManager(context, mColumnCount)
+            recyclerView?.layoutManager = GridLayoutManager(context, mColumnCount)
         }
-        recyclerView.adapter = MyPlayerVoteRecyclerViewAdapter(playerNames)
-
+        recyclerView?.adapter = MyPlayerVoteRecyclerViewAdapter(playerNames).apply { lastSelectedPosition = mLastSelectedPosition}
         val finishButton = view.findViewById<Button>(R.id.fragment_player_vote_finish_button)
         finishButton.setOnClickListener{
-            if((recyclerView.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition > -1) {
-                mListener?.onPlayerVoteFragmentFinishListener((recyclerView.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition)
+            if((recyclerView?.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition > -1) {
+                mListener?.onPlayerVoteFragmentFinishListener((recyclerView?.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition)
             }else{
                 Toast.makeText(activity, getString(R.string.you_must_choose_person), Toast.LENGTH_LONG).show()
             }
@@ -64,6 +65,11 @@ class PlayerVoteFragment : Fragment() {
         return view
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(LAST_SELECTED_POSITION_KEY,(recyclerView?.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition)
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -95,9 +101,9 @@ class PlayerVoteFragment : Fragment() {
     companion object {
 
         // TODO: Customize parameter argument names
-        private val ARG_COLUMN_COUNT = "column-count"
-        private val PLAYER_NAME_COLLECTION_KEY = "playerNameCollectionKey"
-
+        private const val ARG_COLUMN_COUNT = "column-count"
+        private const val PLAYER_NAME_COLLECTION_KEY = "playerNameCollectionKey"
+        private const val LAST_SELECTED_POSITION_KEY = "lastSelectedPositionKey"
         // TODO: Customize parameter initialization
         fun newInstance(columnCount: Int, playerNames : ArrayList<CharSequence>): PlayerVoteFragment {
             val fragment = PlayerVoteFragment()
