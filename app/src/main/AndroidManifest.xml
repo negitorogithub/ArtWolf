@@ -3,7 +3,7 @@
     package="unifar.unifar.artwolf">
 
     <application
-        android:name=".ApplicationContextHolder"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

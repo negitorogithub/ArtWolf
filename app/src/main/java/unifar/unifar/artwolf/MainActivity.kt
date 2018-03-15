@@ -2,7 +2,6 @@ package unifar.unifar.artwolf
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import java.util.*
 
 
@@ -15,8 +14,9 @@ class MainActivity :
         ConfirmFragment.OnFragmentInteractionListener,
         PlayerVoteFragment.OnPlayerVoteFragmentFinishListener,
         ResultFragment.OnFragmentInteractionListener,
+        RetryFragment.OnRetryFragmentRetryListener,
+        RetryFragment.OnRetryFragmentFinishListener,
         IGameDataContain {
-
 
 
     private val mainActivityContainerResId = R.id.main_activity_container
@@ -24,11 +24,11 @@ class MainActivity :
     private val fragmentManager = supportFragmentManager
 
     companion object {
-        private const val PLAYER_VOTE_TAG = "playerVoteTag"
-        private const val SHOW_ACT_TAG = "showActTag"
-        private const val GAME_DATA_KEY = "gameDataKey"
+        private const val PLAYER_VOTE_TAG    = "playerVoteTag"
+        private const val SHOW_ACT_TAG       = "showActTag"
+        private const val GAME_DATA_KEY      = "gameDataKey"
         private const val SHOW_ACT_INDEX_KEY = "showActIndexKey"
-        private const val PLAYER_VOTE_KEY = "playerVoteKey"
+        private const val PLAYER_VOTE_KEY    = "playerVoteKey"
     }
 
     init {
@@ -72,19 +72,10 @@ class MainActivity :
     private var showActIndex: Int = 0
 
     override fun onPlayerInfoDecided(allNames: Collection<CharSequence>) {
-        gameData.allPlayers.forEachIndexed { index, iPlayer -> iPlayer.name = allNames.elementAt(index) }
-        val actsList = mutableListOf(Acts.Wolf)
-        if (gameData.allPlayers.size >= 3){
-            for (i in 2..gameData.allPlayers.size){
-                actsList.add(Acts.Artist)
-            }
-        }
-        actsList.shuffle()
-        for (acts in actsList.withIndex()) {
-            gameData.allPlayers.elementAt(acts.index).act = actsList.elementAt(acts.index)
-        }
+        gameData.allPlayers.forEachIndexed {
+            index, iPlayer -> iPlayer.name = allNames.elementAt(index) }
+        gameData.selectWolf()
         showActIndex = 0
-
         fragmentManager.beginTransaction().replace(
                 mainActivityContainerResId,
                 ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
@@ -97,11 +88,15 @@ class MainActivity :
     private var playerVoteIndex = 0
 
     override fun onConfirmFragmentFinish(tag: String) {
+        if (tag == ""){
+            throw RuntimeException("Please start fragment with tag ")
+        }
         if (tag == SHOW_ACT_TAG) {
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
                     ShowActsFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString(), gameData.allPlayers.elementAt(showActIndex).act, gameData.theme)).commit()
         }
+
         val playerNames = ArrayList<kotlin.CharSequence>()
         gameData.allPlayers.mapTo(playerNames) { it.name}
         if (tag == PLAYER_VOTE_TAG){
@@ -121,7 +116,10 @@ class MainActivity :
                     SHOW_ACT_TAG
             ).commit()
         }else{
-            fragmentManager.beginTransaction().replace(mainActivityContainerResId, CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray())).commit()
+            fragmentManager.beginTransaction().replace(
+                    mainActivityContainerResId,
+                    CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray())
+            ).commit()
         }
     }
 
@@ -163,7 +161,7 @@ class MainActivity :
                 }
             }
             val winnerAct = when (mostVotedPlayerList.map { it.act  }.contains(Acts.Artist)) {
-                true -> Acts.Wolf
+                true  -> Acts.Wolf
                 false -> Acts.Artist
             }
 
@@ -177,10 +175,33 @@ class MainActivity :
     override fun onFragmentInteraction(act: Acts, isReversed: Boolean) {
 
         when(act){
-            Acts.Artist -> if (isReversed) fragmentManager.beginTransaction().replace(mainActivityContainerResId, ResultFragment.newInstance(Acts.Wolf)).commit()
-                           else finish()
-            Acts.Wolf -> finish()
+            Acts.Artist -> if (isReversed)
+                            fragmentManager.beginTransaction().replace(mainActivityContainerResId, ResultFragment.newInstance(Acts.Wolf)).commit()
+                           else
+                            fragmentManager.beginTransaction().replace(mainActivityContainerResId, RetryFragment.newInstance()).commit()
+            Acts.Wolf ->    fragmentManager.beginTransaction().replace(mainActivityContainerResId, RetryFragment.newInstance()).commit()
         }
+    }
+
+
+    override fun onRetryFragmentRetry() {
+        resetAllProgress()
+        gameData.selectWolf()
+        fragmentManager.beginTransaction().replace(
+                mainActivityContainerResId,
+                ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
+                SHOW_ACT_TAG
+        ).commit()
+    }
+
+    override fun onRetryFragmentFinish() {
+        finish()
+    }
+    private fun resetAllProgress(){
+        gameData.resetGame()
+        gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
+        showActIndex = 0
+        playerVoteIndex = 0
     }
 
 }

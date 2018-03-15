@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import unifar.unifar.artwolf.ApplicationContextHolder.Companion.context
 
 import unifar.unifar.artwolf.PlayerListFragment.OnPlayerInfoDecidedListener
 import kotlin.CharSequence

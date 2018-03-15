@@ -14,4 +14,6 @@ interface IGameData : Serializable {
     val wolf: IPlayer
     var votedPlayers: MutableCollection<IPlayer>
     var allPlayers: MutableCollection<IPlayer>
+    fun resetGame()
+    fun selectWolf()
 }

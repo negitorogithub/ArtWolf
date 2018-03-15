@@ -111,7 +111,7 @@ class ShowActsFragment : Fragment() {
             val fragment = ShowActsFragment()
             val args = Bundle()
             args.putString(PLAYER_NAME_KEY, playerName)
-            args.putString(ACT_KEY, act.toString(ApplicationContextHolder.context.resources))
+            args.putString(ACT_KEY, act.toString(MyApplication.context.resources))
             args.putString(THEME_KEY, theme)
 
             fragment.arguments = args
