@@ -61,7 +61,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/default_"
-                android:textSize="@dimen/Regular_45"
+                android:textSize="@dimen/Regular_34"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>

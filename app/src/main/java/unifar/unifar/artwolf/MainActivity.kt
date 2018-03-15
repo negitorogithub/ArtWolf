@@ -5,6 +5,9 @@ import android.os.Bundle
 import java.util.*
 
 
+//TODO: CanvasFragmentのUndoRedoの適宜無効化
+//TODO: タイトルフラグメント
+
 class MainActivity :
         AppCompatActivity(),
         CanvasFragment.OnCanvasFinishListener,

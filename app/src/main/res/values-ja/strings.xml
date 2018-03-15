@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">ArtWolf</string>
     <string name="appId">ca-app-pub-6418178360564076~9611371496</string>
+    <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
 
 
     <string name="artist">本物</string>
@@ -16,10 +17,10 @@
     <string name="default_">デフォルト</string>
     <string name="you_are">あなたは\n「%1$s」です</string>
     <string name="check">チェック</string>
-    <string name="are_you">あなたは%1$sですか？</string>
+    <string name="are_you">あなたは\n%1$sですか？</string>
     <string name="yes">はい</string>
     <string name="you_must_choose_person">偽者だと思う人を一人選んでください</string>
-    <string name="artist_detail">%1$sの絵を描きましょう。しかし、偽者に何を書いているか悟られてはいけません。</string>
+    <string name="artist_detail">「%1$s」の絵を描きましょう。しかし、偽者に何を書いているか悟られてはいけません。</string>
     <string name="wolf_detail">"あなたはテーマを知らないので、何を書いているのか予想して、知っているふりをしましょう。 "</string>
     <string name="Done">完了</string>
     <string name="winner_is">"勝者: "</string>
@@ -116,7 +117,6 @@
         <item>ハチミツ</item>
         <item>地図</item>
         <item>イス</item>
-        <item>夏バテ</item>
         <item>滝</item>
         <item>キャンディー</item>
         <item>靴下</item>

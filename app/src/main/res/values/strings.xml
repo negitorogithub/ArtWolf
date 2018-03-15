@@ -32,6 +32,7 @@
     <string name="themeShow">%1$s.</string>
     <string name="complete">complete</string>
     <string name="retry">Retry</string>
+    <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
     <string-array name="builtInThemes">
         <item>soccer</item>
         <item>tennis</item>
@@ -43,65 +44,83 @@
         <item>cinema</item>
         <item>library</item>
         <item>fridge</item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-
+        <item>smart phone</item>
+        <item>PC</item>
+        <item>fortune telling</item>
+        <item>robot</item>
+        <item>cartoon</item>
+        <item>argument</item>
+        <item>date</item>
+        <item>gym</item>
+        <item>TV</item>
+        <item>marathon</item>
+        <item>play</item>
+        <item>cooking</item>
+        <item>reading</item>
+        <item>train</item>
+        <item>air plane</item>
+        <item>calender</item>
+        <item>heaven</item>
+        <item>hell</item>
+        <item>trip</item>
+        <item>money</item>
+        <item>sports day</item>
+        <item>hero</item>
+        <item>hospital</item>
+        <item>restaurant</item>
+        <item>pen case</item>
+        <item>flower bed</item>
+        <item>park</item>
+        <item>letter</item>
+        <item>vegetable</item>
+        <item>fruit</item>
+        <item>wheather</item>
+        <item>picture</item>
+        <item>phone</item>
+        <item>theme park</item>
+        <item>zoo</item>
+        <item>aquarium</item>
+        <item>amusement arcade</item>
+        <item>picnic</item>
+        <item>piano</item>
+        <item>guitar</item>
+        <item>Olympic</item>
+        <item>snow</item>
+        <item>christmas</item>
+        <item>pool</item>
+        <item>present</item>
+        <item>medicine</item>
+        <item>weddiing ceremony</item>
+        <item>comedy</item>
+        <item>millionaire</item>
+        <item>bath</item>
+        <item>hotel</item>
+        <item>clock</item>
+        <item>watch</item>
+        <item>Statue of liberty</item>
+        <item>Eiffel tower</item>
+        <item>Leaning Tower of Pisa</item>
+        <item>life</item>
+        <item>baby</item>
+        <item>exam</item>
+        <item>fan</item>
+        <item>Picasso</item>
+        <item>Edison</item>
+        <item>broom</item>
+        <item>curry</item>
+        <item>light</item>
+        <item>battery</item>
+        <item>pole</item>
+        <item>glasses</item>
+        <item>writing brush</item>
+        <item>thermometer</item>
+        <item>honey</item>
+        <item>map</item>
+        <item>chair</item>
+        <item>waterfall</item>
+        <item>candy</item>
+        <item>socks</item>
+        <item>spaghetti</item>
     </string-array>
 
 
