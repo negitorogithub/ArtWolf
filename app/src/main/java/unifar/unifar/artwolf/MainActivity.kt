@@ -1,5 +1,6 @@
 package unifar.unifar.artwolf
 
+import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import java.util.*
@@ -128,7 +129,7 @@ class MainActivity :
 
 
     override fun onCanvasFragmentFinish() {
-
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         val playerNames = ArrayList<kotlin.CharSequence>()
         gameData.allPlayers.mapTo(playerNames) { it.name}
         fragmentManager.beginTransaction().replace(

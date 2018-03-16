@@ -34,7 +34,9 @@ class ResultFragment : Fragment(){
         if (arguments != null) {
             act = arguments.getSerializable(ACT_KEY) as Acts
         }
-        savedInstanceState?.let{savedInstanceState.getBoolean(IS_REVERSED_KEY)}
+        savedInstanceState?.let{isReversed = savedInstanceState.getBoolean(IS_REVERSED_KEY)}
+        savedInstanceState?.let{theme = savedInstanceState.getString(THEME_KEY)}
+
     }
 
 
@@ -72,6 +74,8 @@ class ResultFragment : Fragment(){
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putBoolean(IS_REVERSED_KEY, isReversed)
+        outState?.putString(THEME_KEY, theme)
+
     }
 
     override fun onAttach(context: Context?) {
@@ -111,6 +115,8 @@ class ResultFragment : Fragment(){
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private const val ACT_KEY = "actKey"
         private const val IS_REVERSED_KEY = "isReversedKey"
+        private const val THEME_KEY = "themeKey"
+
 
         /**
          * Use this factory method to create a new instance of

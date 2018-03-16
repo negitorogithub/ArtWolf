@@ -3,6 +3,9 @@ package unifar.unifar.artwolf
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +44,13 @@ class ShowActsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_show_acts, container, false)
         val nameView = view.findViewById<TextView>(R.id.nameTextView)
-        nameView.text = getString(R.string.you_are, act)
+        val sb = SpannableStringBuilder()
+        sb.append(getString(R.string.you_are_an))
+        val smallTextLength = sb.length
+        sb.append("\n"+act)
+        sb.setSpan(RelativeSizeSpan(1.5f), smallTextLength, sb.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        sb.append(getString(R.string.respected_end_chars))
+        nameView.text = sb
         val finishButton = view.findViewById<Button>(R.id.fragment_show_act_finish_button)
         finishButton.setOnClickListener { onFinishButtonPressed() }
         val detailTextView = view.findViewById<TextView>(R.id.act_detail_and_theme_text)

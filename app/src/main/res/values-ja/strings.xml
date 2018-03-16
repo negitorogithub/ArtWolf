@@ -4,6 +4,8 @@
     <string name="appId">ca-app-pub-6418178360564076~9611371496</string>
     <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
 
+    <string name="normal_end_chars">。</string>
+    <string name="respected_end_chars">です。</string>
 
     <string name="artist">本物</string>
     <string name="wolf">偽者</string>
@@ -15,7 +17,8 @@
     <string name="change_to">次:%1$s</string>
     <string name="player">プレイヤー</string>
     <string name="default_">デフォルト</string>
-    <string name="you_are">あなたは\n「%1$s」です</string>
+    <string name="you_are_an">あなたは</string>
+    <string name="you_are_x">あなたは\n「%1$s」です</string>
     <string name="check">チェック</string>
     <string name="are_you">あなたは\n%1$sですか？</string>
     <string name="yes">はい</string>

@@ -1,6 +1,8 @@
 package unifar.unifar.artwolf
 
 import android.content.Context
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -34,15 +36,14 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
     private var colorKinds: Int = -1
     private var mListener: OnCanvasFinishListener? = null
 
-    private var trajectories: Collection<ITrajectory>? = null
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            playerNames = arguments.getCharSequenceArray(IPLAYERS_KEY).toList()
-        }
+                if (arguments != null) {
+                    playerNames = arguments.getCharSequenceArray(IPLAYERS_KEY).toList()
+                }
         savedInstanceState?.let { nextIPlayerIndex = savedInstanceState.getInt(NEXT_PLAYER_INDEX_KEY) }
         savedInstanceState?.let { colorKinds = savedInstanceState.getInt(COLOR_KINDS_KEY) }
         savedInstanceState?.let { playerNames = savedInstanceState.getCharSequenceArray(IPLAYERS_KEY).toList() }
@@ -53,6 +54,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
             // Inflate the layout for this fragment
 
         val thisView = inflater!!.inflate(R.layout.fragment_canvas, container, false)
+
 
         undoWidget = thisView.findViewById(R.id.undoButton)
         redoWidget = thisView.findViewById(R.id.redoButton)
@@ -124,8 +126,11 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
 
     override fun onDetach() {
         super.onDetach()
+
         mListener = null
     }
+
+    private lateinit var trajectories: Collection<ITrajectory>
 
     override fun onITrajectoriesHistoryIssued(trajectories: Collection<ITrajectory>) {
         this.trajectories = trajectories
