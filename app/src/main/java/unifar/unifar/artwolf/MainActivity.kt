@@ -20,6 +20,8 @@ class MainActivity :
         ResultFragment.OnFragmentInteractionListener,
         RetryFragment.OnRetryFragmentRetryListener,
         RetryFragment.OnRetryFragmentFinishListener,
+        EditThemeSelectFragment.OnEditThemeSelectFragmentEditListener,
+        EditThemeSelectFragment.OnEditThemeSelectFragmentRandomListener,
         IGameDataContain {
 
 
@@ -42,8 +44,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         setContentView(R.layout.activity_main)
-        gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
-        savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerNumberDecideFragment.newInstance()).commit()
+        savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, EditThemeSelectFragment.newInstance()).commit()
         savedInstanceState?.let { gameData = savedInstanceState.getSerializable(GAME_DATA_KEY) as IGameData}
         savedInstanceState?.let { showActIndex = savedInstanceState.getInt(SHOW_ACT_INDEX_KEY) }
         savedInstanceState?.let { playerVoteIndex = savedInstanceState.getInt(PLAYER_VOTE_KEY) }
@@ -57,6 +58,22 @@ class MainActivity :
         outState?.putSerializable(GAME_DATA_KEY, gameData)
         outState?.putInt(SHOW_ACT_INDEX_KEY, showActIndex)
         outState?.putInt(PLAYER_VOTE_KEY, playerVoteIndex)
+    }
+
+
+
+    override fun onEditThemeSelectFragmentEdit() {
+
+
+
+    }
+
+    override fun onEditThemeSelectFragmentRandom() {
+        gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
+        fragmentManager.beginTransaction().replace(
+                mainActivityContainerResId,
+                PlayerNumberDecideFragment.newInstance()
+        ).commit()
     }
 
     override fun onValueDecided(playerNumber: Int) {

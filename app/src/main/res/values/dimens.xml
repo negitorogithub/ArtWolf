@@ -11,5 +11,6 @@
     <dimen name="Regular_34">34sp</dimen>
     <dimen name="Regular_24">24sp</dimen>
     <dimen name="smallButtonHeight">64dp</dimen>
+    <dimen name="mediumButtonHeight">100dp</dimen>
 
 </resources>

@@ -36,6 +36,10 @@
     <string name="complete">complete</string>
     <string name="retry">Retry</string>
     <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
+    <string name="edit">edit</string>
+    <string name="random">random</string>
+    <string name="please_choose_theme_mode">Please choose theme mode</string>
+    <string name="editThemeSelectFragmentBannerAdId">ca-app-pub-6418178360564076/3743019021</string>
     <string-array name="builtInThemes">
         <item>soccer</item>
         <item>tennis</item>
