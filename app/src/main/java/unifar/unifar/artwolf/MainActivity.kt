@@ -40,6 +40,7 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         setContentView(R.layout.activity_main)
         gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
         savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, PlayerNumberDecideFragment.newInstance()).commit()
@@ -120,6 +121,7 @@ class MainActivity :
                     SHOW_ACT_TAG
             ).commit()
         }else{
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             fragmentManager.beginTransaction().replace(
                     mainActivityContainerResId,
                     CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray())

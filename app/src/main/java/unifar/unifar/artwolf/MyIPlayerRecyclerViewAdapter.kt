@@ -60,7 +60,7 @@ inner class MyTextWatcher : TextWatcher{
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        allNames[position] = s ?: "Default"
+        allNames[position] = s.toString()
         Log.d("artWolf", allNames[position].toString())
     }
 
