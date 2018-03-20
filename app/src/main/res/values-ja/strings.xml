@@ -35,6 +35,7 @@
     <string name="hello_blank_fragment">haro--</string>
     <string name="complete">完了</string>
     <string name="retry">もう一回</string>
+    <string name="theme">お題</string>
 
     <string-array name="builtInThemes">
         <item>サッカー</item>
@@ -126,4 +127,8 @@
         <item>スパゲッティ</item>
 
     </string-array>
+    <string name="edit">編集</string>
+    <string name="random">ランダム</string>
+    <string name="please_choose_theme_mode">お題モードを選んでください</string>
+    <string name="please_fill_in_theme_field">お題を入力してください</string>
 </resources>

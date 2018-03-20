@@ -3,6 +3,7 @@ package unifar.unifar.artwolf
 import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import java.util.*
 
 
@@ -22,6 +23,7 @@ class MainActivity :
         RetryFragment.OnRetryFragmentFinishListener,
         EditThemeSelectFragment.OnEditThemeSelectFragmentEditListener,
         EditThemeSelectFragment.OnEditThemeSelectFragmentRandomListener,
+        EditThemeFragment.OnEditThemeFragmentFinishListener,
         IGameDataContain {
 
 
@@ -44,7 +46,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         setContentView(R.layout.activity_main)
-        savedInstanceState ?: fragmentManager.beginTransaction().replace(mainActivityContainerResId, EditThemeSelectFragment.newInstance()).commit()
+        savedInstanceState ?: replaceFragment(EditThemeSelectFragment.newInstance())
         savedInstanceState?.let { gameData = savedInstanceState.getSerializable(GAME_DATA_KEY) as IGameData}
         savedInstanceState?.let { showActIndex = savedInstanceState.getInt(SHOW_ACT_INDEX_KEY) }
         savedInstanceState?.let { playerVoteIndex = savedInstanceState.getInt(PLAYER_VOTE_KEY) }
@@ -62,18 +64,28 @@ class MainActivity :
 
 
 
-    override fun onEditThemeSelectFragmentEdit() {
-
-
-
-    }
-
     override fun onEditThemeSelectFragmentRandom() {
         gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
-        fragmentManager.beginTransaction().replace(
-                mainActivityContainerResId,
-                PlayerNumberDecideFragment.newInstance()
-        ).commit()
+        if (gameData.allPlayers.map {it.act}.contains(Acts.Wolf)) {
+            replaceFragment(
+                    ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
+                    SHOW_ACT_TAG)
+        }else{
+            replaceFragment(PlayerNumberDecideFragment.newInstance())
+        }
+        }
+    override fun onEditThemeSelectFragmentEdit() {
+        replaceFragment(EditThemeFragment.newInstance())
+    }
+    override fun onEditThemeFragmentFinish(theme: String) {
+        gameData.theme = theme
+        if (gameData.allPlayers.map {it.act}.contains(Acts.Wolf)) {
+            replaceFragment(
+                    ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
+                    SHOW_ACT_TAG)
+        }else{
+            replaceFragment(PlayerNumberDecideFragment.newInstance())
+        }
     }
 
     override fun onValueDecided(playerNumber: Int) {
@@ -83,12 +95,7 @@ class MainActivity :
             }
         }
         gameData.playerCount = gameData.allPlayers.size
-
-        fragmentManager.beginTransaction().replace(
-                mainActivityContainerResId,
-                PlayerListFragment.newInstance(1, gameData.allPlayers.map { it.name.toString() }.toMutableList())
-        ).commit()
-
+        replaceFragment(PlayerListFragment.newInstance(1, gameData.allPlayers.map { it.name.toString() }.toMutableList()))
     }
 
     private var showActIndex: Int = 0
@@ -97,14 +104,9 @@ class MainActivity :
         gameData.allPlayers.forEachIndexed {
             index, iPlayer -> iPlayer.name = allNames.elementAt(index) }
         gameData.selectWolf()
-        showActIndex = 0
-        fragmentManager.beginTransaction().replace(
-                mainActivityContainerResId,
+        replaceFragment(
                 ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
-                SHOW_ACT_TAG
-        ).commit()
-
-
+                SHOW_ACT_TAG)
     }
 
     private var playerVoteIndex = 0
@@ -114,59 +116,45 @@ class MainActivity :
             throw RuntimeException("Please start fragment with tag ")
         }
         if (tag == SHOW_ACT_TAG) {
-            fragmentManager.beginTransaction().replace(
-                    mainActivityContainerResId,
-                    ShowActsFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString(), gameData.allPlayers.elementAt(showActIndex).act, gameData.theme)).commit()
+            replaceFragment(ShowActsFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString(), gameData.allPlayers.elementAt(showActIndex).act, gameData.theme))
+
         }
 
         val playerNames = ArrayList<kotlin.CharSequence>()
         gameData.allPlayers.mapTo(playerNames) { it.name}
         if (tag == PLAYER_VOTE_TAG){
-            fragmentManager.beginTransaction().replace(
-                    mainActivityContainerResId,
-                    PlayerVoteFragment.newInstance(1, playerNames)
-            ).commit()
+            replaceFragment(PlayerVoteFragment.newInstance(1, playerNames))
         }
     }
 
     override fun onShowActFragmentFinish() {
         showActIndex++
         if (showActIndex < gameData.allPlayers.size){
-            fragmentManager.beginTransaction().replace(
-                    mainActivityContainerResId,
+            replaceFragment(
                     ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
-                    SHOW_ACT_TAG
-            ).commit()
+                    SHOW_ACT_TAG)
         }else{
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            fragmentManager.beginTransaction().replace(
-                    mainActivityContainerResId,
-                    CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray())
-            ).commit()
+            replaceFragment(CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray()))
         }
     }
-
 
     override fun onCanvasFragmentFinish() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         val playerNames = ArrayList<kotlin.CharSequence>()
         gameData.allPlayers.mapTo(playerNames) { it.name}
-        fragmentManager.beginTransaction().replace(
-                mainActivityContainerResId,
+        replaceFragment(
                 ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name.toString()),
-                PLAYER_VOTE_TAG
-        ).commit()
+                PLAYER_VOTE_TAG)
     }
 
     override fun onPlayerVoteFragmentFinishListener(position: Int) {
         gameData.allPlayers.elementAt(playerVoteIndex).votedTo = gameData.allPlayers.elementAt(position)
         playerVoteIndex++
         if (playerVoteIndex < gameData.allPlayers.size) {
-            fragmentManager.beginTransaction().replace(
-                    mainActivityContainerResId,
+            replaceFragment(
                     ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name.toString()),
-                    PLAYER_VOTE_TAG
-            ).commit()
+                    PLAYER_VOTE_TAG)
         }else{
             val votedPlayers = ArrayList<IPlayer>()
             gameData.allPlayers.mapTo(votedPlayers){it.votedTo}
@@ -187,11 +175,7 @@ class MainActivity :
                 true  -> Acts.Wolf
                 false -> Acts.Artist
             }
-
-            fragmentManager.beginTransaction().replace(
-                    mainActivityContainerResId,
-                    ResultFragment.newInstance(winnerAct)
-            ).commit()
+            replaceFragment(ResultFragment.newInstance(winnerAct))
         }
     }
 
@@ -199,22 +183,17 @@ class MainActivity :
 
         when(act){
             Acts.Artist -> if (isReversed)
-                            fragmentManager.beginTransaction().replace(mainActivityContainerResId, ResultFragment.newInstance(Acts.Wolf)).commit()
-                           else
-                            fragmentManager.beginTransaction().replace(mainActivityContainerResId, RetryFragment.newInstance()).commit()
-            Acts.Wolf ->    fragmentManager.beginTransaction().replace(mainActivityContainerResId, RetryFragment.newInstance()).commit()
+                            replaceFragment(ResultFragment.newInstance(Acts.Wolf))
+                            else
+                            replaceFragment(RetryFragment.newInstance())
+            Acts.Wolf ->    replaceFragment(RetryFragment.newInstance())
         }
     }
-
 
     override fun onRetryFragmentRetry() {
         resetAllProgress()
         gameData.selectWolf()
-        fragmentManager.beginTransaction().replace(
-                mainActivityContainerResId,
-                ConfirmFragment.newInstance(gameData.allPlayers.elementAt(showActIndex).name.toString()),
-                SHOW_ACT_TAG
-        ).commit()
+        replaceFragment(EditThemeSelectFragment.newInstance())
     }
 
     override fun onRetryFragmentFinish() {
@@ -227,4 +206,12 @@ class MainActivity :
         playerVoteIndex = 0
     }
 
+
+    private fun replaceFragment(fragment: Fragment, tag: String = "replacedByMainActivity"){
+        fragmentManager.beginTransaction().replace(
+                mainActivityContainerResId,
+                fragment,
+                tag
+        ).commit()
+    }
 }
