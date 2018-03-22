@@ -24,13 +24,26 @@ class MainActivity :
         EditThemeSelectFragment.OnEditThemeSelectFragmentEditListener,
         EditThemeSelectFragment.OnEditThemeSelectFragmentRandomListener,
         EditThemeFragment.OnEditThemeFragmentFinishListener,
+        PaintView.CanReDoListener,
+        PaintView.CanUnDoListener,
         IGameDataContain {
+
 
 
     private val mainActivityContainerResId = R.id.main_activity_container
     override var gameData: IGameData = GameData()
     private val fragmentManager = supportFragmentManager
 
+    // paintViewからの通知がこっちに飛んでくるため
+    private lateinit var canvasFragment: CanvasFragment
+
+    override fun onNotifyCanRedo(canRedo: Boolean) {
+        canvasFragment.onNotifyCanRedo(canRedo)
+    }
+
+    override fun onNotifyCanUndo(canUndo: Boolean) {
+        canvasFragment.onNotifyCanUndo(canUndo)
+    }
     companion object {
         private const val PLAYER_VOTE_TAG    = "playerVoteTag"
         private const val SHOW_ACT_TAG       = "showActTag"
@@ -135,7 +148,8 @@ class MainActivity :
                     SHOW_ACT_TAG)
         }else{
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            replaceFragment(CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray()))
+            canvasFragment = CanvasFragment.newInstance(gameData.allPlayers.map { it.name}.toTypedArray())
+            replaceFragment(canvasFragment)
         }
     }
 

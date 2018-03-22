@@ -1,8 +1,6 @@
 package unifar.unifar.artwolf
 
 import android.content.Context
-import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -23,7 +21,9 @@ import android.widget.ImageView
  * Use the [CanvasFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
+class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets, PaintView.CanReDoListener, PaintView.CanUnDoListener{
+
+
     override var paintView: PaintView? = null
     override var undoWidget: View? = null
     override var redoWidget: View? = null
@@ -91,9 +91,30 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets{
         //初期設定
         (nextColorWidget as Button?)?.text = getString(R.string.change_to, playerNames.elementAt(nextIPlayerIndex))
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
+        onNotifyCanRedo(false)
+        onNotifyCanUndo(false)
         return thisView
     }
 
+    //変更をリアルタイムで可視性に反映
+    override fun onNotifyCanRedo(canRedo: Boolean) {
+        if (canRedo){
+            redoWidget?.visibility = View.VISIBLE
+        }
+        else{
+            redoWidget?.visibility = View.INVISIBLE
+        }
+
+    }
+
+    override fun onNotifyCanUndo(canUndo: Boolean) {
+        if (canUndo){
+            undoWidget?.visibility = View.VISIBLE
+        }
+        else{
+            undoWidget?.visibility = View.INVISIBLE
+        }
+    }
     private fun onFinishButtonPressed() {
         if (mListener != null) {
             mListener!!.onCanvasFragmentFinish()

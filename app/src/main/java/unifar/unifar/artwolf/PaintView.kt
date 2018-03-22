@@ -2,10 +2,8 @@ package unifar.unifar.artwolf
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.os.Parcelable
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -25,8 +23,11 @@ import java.util.*
 //contextだけを引数に取らないと怒られるためcolorKindsはセカンダリに回している
 class PaintView(context: Context, attributeSet: AttributeSet) :View(context, attributeSet), IPaintView{
 
-
-    private var rootContext: Context? = null
+    var canRedo: Boolean = false
+    var canUndo: Boolean = false
+    private var rootContext: Context = context
+    private var canRedoListener: CanReDoListener? = null
+    private var canUnDoListener: CanUnDoListener? = null
     private val trajectoriesRedoStack = Stack<ITrajectory>()
     private val trajectoriesUndoStack = Stack<ITrajectory>()
     var colorKinds : Int = 1
@@ -38,10 +39,14 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
     //仕方なく var にしてる
     constructor(context: Context, attributeSet: AttributeSet, colorKinds : Int): this(context, attributeSet){
         playerColorPalette = PlayersColor(colorKinds)
+        refreshStates()
     }
 
     init {
-        rootContext = context
+        if (context is CanReDoListener) canRedoListener = context
+        else throw NotImplementedError("PaintView must implement CanRedoListener")
+        if (context is CanUnDoListener) canUnDoListener = context
+        else throw NotImplementedError("PaintView must implement CanUndoListener")
 
         this.colorKinds = colorKinds
         currentPaint.color = ContextCompat.getColor(rootContext, playerColorPalette.currentColorId)
@@ -49,11 +54,10 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
         currentPaint.strokeJoin = Paint.Join.ROUND
         currentPaint.strokeCap = Paint.Cap.ROUND
         currentPaint.strokeWidth = 4f
+        refreshStates()
+
     }
 
-    override fun performClick(): Boolean {
-        return super.performClick()
-    }
 
     override fun onDraw(canvas: Canvas){
 
@@ -65,6 +69,7 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
 
+
         when(event?.action){
         MotionEvent.ACTION_DOWN -> {
             performClick()
@@ -72,6 +77,7 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
             currentPath.reset()
             currentPath.moveTo(event.x, event.y )
             invalidate()
+            refreshStates()
             return true
         }
         MotionEvent.ACTION_MOVE -> {
@@ -84,6 +90,8 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
             trajectoriesUndoStack.add(Trajectory(Paint(currentPaint), Path(currentPath)))
             trajectoriesRedoStack.clear()
             currentPath.reset()
+            refreshStates()
+
             invalidate()
             return true
         }
@@ -98,6 +106,24 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
         if (context is IServeITrajectories){
             context.onITrajectoriesHistoryIssued(trajectoriesUndoStack)
         }
+        refreshStates()
+    }
+
+
+
+    private fun refreshStates(): Unit {
+        canRedo = trajectoriesRedoStack.isNotEmpty()
+        canRedoListener?.onNotifyCanRedo(canRedo)
+        canUndo = trajectoriesUndoStack.isNotEmpty()
+        canUnDoListener?.onNotifyCanUndo(canUndo)
+    }
+
+    interface CanReDoListener{
+        fun onNotifyCanRedo(canRedo: Boolean)
+    }
+
+    interface CanUnDoListener{
+        fun onNotifyCanUndo(canUndo: Boolean)
     }
 
     /**
@@ -105,10 +131,12 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
      *
      */
     override fun undo(){
+
         if (!trajectoriesUndoStack.isEmpty()) {
             trajectoriesRedoStack.add(trajectoriesUndoStack.pop())
         }
         invalidate()
+        refreshStates()
     }
 
     /**
@@ -116,10 +144,12 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
      *
      */
     override fun redo(){
+
         if (!trajectoriesRedoStack.isEmpty()) {
             trajectoriesUndoStack.add(trajectoriesRedoStack.pop())
         }
         invalidate()
+        refreshStates()
     }
     override fun changeColorToNext() {
         currentPaint.color = ContextCompat.getColor(rootContext, playerColorPalette.nextColorResId())
