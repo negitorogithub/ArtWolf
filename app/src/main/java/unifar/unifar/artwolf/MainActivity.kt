@@ -4,13 +4,10 @@ import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.InterstitialAd
 import hotchemi.android.rate.AppRate
-import android.text.style.TtsSpan
 import java.util.*
-import hotchemi.android.rate.OnClickButtonListener
-import hotchemi.android.rate.StoreType
-
-
 
 
 class MainActivity :
@@ -20,7 +17,7 @@ class MainActivity :
         PlayerNumberDecideFragment.PlayerNumberReceiver,
         PlayerListFragment.OnPlayerInfoDecidedListener,
         ShowActsFragment.OnShowActFragmentFinishListener,
-        TallkTimeFragment.OnTalkTimeFragmentFinishListener,
+        TalkTimeFragment.OnTalkTimeFragmentFinishListener,
         ConfirmFragment.OnFragmentInteractionListener,
         PlayerVoteFragment.OnPlayerVoteFragmentFinishListener,
         ResultFragment.OnFragmentInteractionListener,
@@ -36,6 +33,7 @@ class MainActivity :
     private val mainActivityContainerResId = R.id.main_activity_container
     override var gameData: IGameData = GameData()
     private val fragmentManager = supportFragmentManager
+    private lateinit var mInterstitialAd: InterstitialAd
 
     // paintViewからの通知がこっちに飛んでくるため
     private lateinit var canvasFragment: CanvasFragment
@@ -73,6 +71,16 @@ class MainActivity :
                 .monitor()
 
         AppRate.showRateDialogIfMeetsConditions(this)
+
+        mInterstitialAd = InterstitialAd(this).apply {
+            adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            adListener = (object : AdListener() {
+                override fun onAdClosed() {
+                    mInterstitialAd.loadAd(MyApplication.adRequest)
+                }
+            })
+        }
+        mInterstitialAd.loadAd(MyApplication.adRequest)
     }
 
 
@@ -167,7 +175,7 @@ class MainActivity :
 
     override fun onCanvasFragmentFinish() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        replaceFragment(TallkTimeFragment.newInstance())
+        replaceFragment(TalkTimeFragment.newInstance())
     }
 
 
@@ -212,6 +220,11 @@ class MainActivity :
     }
 
     override fun onFragmentInteraction(act: Acts, isReversed: Boolean) {
+
+
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+        }
 
         when(act){
             Acts.Artist -> if (isReversed)

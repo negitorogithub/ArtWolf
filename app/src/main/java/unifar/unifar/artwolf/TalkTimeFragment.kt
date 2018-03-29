@@ -7,20 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.InterstitialAd
 
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [TallkTimeFragment.OnTalkTimeFragmentFinishListener] interface
+ * [TalkTimeFragment.OnTalkTimeFragmentFinishListener] interface
  * to handle interaction events.
- * Use the [TallkTimeFragment.newInstance] factory method to
+ * Use the [TalkTimeFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class TallkTimeFragment : Fragment() {
+class TalkTimeFragment : Fragment() {
     private var listener: OnTalkTimeFragmentFinishListener? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -32,10 +33,12 @@ class TallkTimeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_tallk_time, container, false)
         val finishButton = view.findViewById<Button>(R.id.talk_time_fragment_finish_button)
+
         finishButton.setOnClickListener {
             onButtonPressed()
             fragmentManager.beginTransaction().remove(this).commit()
         }
+
         return view
     }
 
@@ -77,11 +80,11 @@ class TallkTimeFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @return A new instance of fragment TallkTimeFragment.
+         * @return A new instance of fragment TalkTimeFragment.
          */
         @JvmStatic
         fun newInstance() =
-                TallkTimeFragment().apply {
+                TalkTimeFragment().apply {
                     arguments = Bundle().apply {
                     }
                 }
