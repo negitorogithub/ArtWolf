@@ -7,6 +7,7 @@
     <string name="normal_end_chars">。</string>
     <string name="respected_end_chars">です。</string>
 
+    <string name="please_fill_in_theme_field">お題を入力してください</string>
     <string name="artist">本物</string>
     <string name="wolf">偽者</string>
     <string name="Redo">次へ</string>
@@ -20,7 +21,7 @@
     <string name="you_are_an">あなたは</string>
     <string name="you_are_x">あなたは\n「%1$s」です</string>
     <string name="check">チェック</string>
-    <string name="are_you">あなたは\n%1$sですか？</string>
+    <string name="are_you">あなたは\n%1$s\nですか？</string>
     <string name="yes">はい</string>
     <string name="you_must_choose_person">偽者だと思う人を一人選んでください</string>
     <string name="artist_detail">「%1$s」の絵を描きましょう。しかし、偽者に何を書いているか悟られてはいけません。</string>
@@ -36,7 +37,10 @@
     <string name="complete">完了</string>
     <string name="retry">もう一回</string>
     <string name="theme">お題</string>
-
+    <string name="edit">編集</string>
+    <string name="random">ランダム</string>
+    <string name="please_choose_theme_mode">お題モードを選んでください</string>
+    <string name="is_drawing">%1$sの番です</string>
     <string-array name="builtInThemes">
         <item>サッカー</item>
         <item>テニス</item>
@@ -127,8 +131,4 @@
         <item>スパゲッティ</item>
 
     </string-array>
-    <string name="edit">編集</string>
-    <string name="random">ランダム</string>
-    <string name="please_choose_theme_mode">お題モードを選んでください</string>
-    <string name="please_fill_in_theme_field">お題を入力してください</string>
 </resources>

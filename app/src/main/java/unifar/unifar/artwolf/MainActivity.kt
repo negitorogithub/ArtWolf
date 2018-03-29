@@ -134,7 +134,8 @@ class MainActivity :
         }
 
         val playerNames = ArrayList<kotlin.CharSequence>()
-        gameData.allPlayers.mapTo(playerNames) { it.name}
+        gameData.allPlayers.mapTo(playerNames) {it.name}
+        playerNames.removeAt(playerVoteIndex)
         if (tag == PLAYER_VOTE_TAG){
             replaceFragment(PlayerVoteFragment.newInstance(1, playerNames))
         }

@@ -9,16 +9,17 @@
     <Button
         android:id="@+id/resultFragmentFinishButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/smallButtonHeight"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/complete"
-        android:textSize="@dimen/Regular_56"
+        android:textSize="@dimen/Regular_34"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent" />
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="363dp"
@@ -33,46 +34,46 @@
         app:layout_constraintTop_toBottomOf="@+id/resultFragmentActText"
         app:layout_constraintVertical_bias="1.0">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/resultFragmentWolfWonConstraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/resultFragmentFinishButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultFragmentActText">
-
-        <TextView
-            android:id="@+id/resultFragmentThemeFormerTextView"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/resultFragmentWolfWonConstraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/the_theme_is"
-            android:textSize="@dimen/Regular_45"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/resultFragmentThemeLatterTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/themeShow"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/Regular_56"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/resultFragmentFinishButton"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/resultFragmentThemeFormerTextView" />
-    </android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/resultFragmentActText">
+
+            <TextView
+                android:id="@+id/resultFragmentThemeFormerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/the_theme_is"
+                android:textSize="@dimen/Regular_45"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/resultFragmentThemeLatterTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/themeShow"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/Regular_56"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resultFragmentThemeFormerTextView" />
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
     <ScrollView
@@ -80,7 +81,6 @@
         android:layout_width="363dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/resultFragmentFinishButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,6 +112,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/did_wolf_answer_correct_theme"
                 android:textSize="@dimen/Regular_34"
+                android:fontFamily="@font/tanuki_magic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/resultFragmentAnswerThemeTextView" />
 

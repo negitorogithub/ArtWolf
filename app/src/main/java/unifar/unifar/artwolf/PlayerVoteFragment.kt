@@ -51,7 +51,9 @@ class PlayerVoteFragment : Fragment() {
         } else {
             recyclerView?.layoutManager = GridLayoutManager(context, mColumnCount)
         }
-        recyclerView?.adapter = MyPlayerVoteRecyclerViewAdapter(playerNames).apply { lastSelectedPosition = mLastSelectedPosition}
+        recyclerView?.adapter = MyPlayerVoteRecyclerViewAdapter(playerNames).apply {
+            lastSelectedPosition = mLastSelectedPosition
+        }
         val finishButton = view.findViewById<Button>(R.id.fragment_player_vote_finish_button)
         finishButton.setOnClickListener{
             if((recyclerView?.adapter as MyPlayerVoteRecyclerViewAdapter).lastSelectedPosition > -1) {

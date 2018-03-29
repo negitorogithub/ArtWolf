@@ -11,5 +11,6 @@
         android:layout_weight="1"
         android:text="@string/default_"
         android:textSize="@dimen/Regular_34"
+        android:fontFamily="@font/tanuki_magic"
         />
 </LinearLayout>

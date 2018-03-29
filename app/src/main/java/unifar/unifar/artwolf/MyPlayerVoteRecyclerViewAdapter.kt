@@ -1,5 +1,6 @@
 package unifar.unifar.artwolf
 
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,6 @@ import kotlin.CharSequence
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
  * specified [OnPlayerVoteFragmentFinishListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class MyPlayerVoteRecyclerViewAdapter(private val playerNames: ArrayList<CharSequence>) : RecyclerView.Adapter<MyPlayerVoteRecyclerViewAdapter.ViewHolder>() {
 
@@ -46,6 +46,7 @@ class MyPlayerVoteRecyclerViewAdapter(private val playerNames: ArrayList<CharSeq
                 lastSelectedPosition = adapterPosition
                 notifyDataSetChanged()
             }
+            radioButton?.typeface = Typeface.createFromAsset(mView.context.assets,"font/tanuki_magic.ttf")
         }
 
     }

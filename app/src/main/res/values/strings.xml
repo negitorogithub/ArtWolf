@@ -20,7 +20,7 @@
     <string name="you_are_an">You are a(n) </string>
     <string name="you_are_x">You are a(n) "%1$s".</string>
     <string name="check">Check</string>
-    <string name="are_you">Are you %1$s?</string>
+    <string name="are_you">Are you \n%1$s?</string>
     <string name="yes">YES</string>
     <string name="ok" translatable="false">OK</string>
     <string name="you_must_choose_person">You must choose a person.</string>
@@ -42,6 +42,8 @@
     <string name="editThemeSelectFragmentBannerAdId" translatable="false">ca-app-pub-6418178360564076/3743019021</string>
     <string name="theme">theme</string>
     <string name="please_fill_in_theme_field">Please fill in theme field</string>
+    <string name="back">back</string>
+    <string name="is_drawing">%1$s is drawing</string>
     <string-array name="builtInThemes">
         <item>soccer</item>
         <item>tennis</item>

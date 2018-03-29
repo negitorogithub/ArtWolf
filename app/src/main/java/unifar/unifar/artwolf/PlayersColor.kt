@@ -12,21 +12,18 @@ package unifar.unifar.artwolf
 class PlayersColor(private val playerNumber: Int) {
     enum class ColorsToUse(val colorResId: Int){
         Red(R.color.red_500),
-        Orange(R.color.orange_500),
-        Yellow(R.color.yellow_500),
-        Green(R.color.green_500),
         Blue(R.color.blue_500),
+        Orange(R.color.orange_500),
+        Green(R.color.green_500),
         Purple(R.color.purple_500),
 
         Pink(R.color.pink_500),
         DeepOrange(R.color.deep_orange_500),
-        Amber(R.color.amber_500),
         Cyan(R.color.cyan_500),
         Teal(R.color.teal_500),
         Indigo(R.color.indigo_500),
         DeepPurple(R.color.deep_purple_500),
 
-        Lime(R.color.lime_500),
         LightGreen(R.color.light_green_500),
         LightBlue(R.color.light_blue_500),
         Brown(R.color.brown_500)

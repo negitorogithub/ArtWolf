@@ -78,8 +78,8 @@ class PlayerNumberDecideFragment : Fragment() {
         //三人居ないとゲームが成立しない
 
         private const val MIN_PLAYER_NUMBER = 3
-        //色に余裕を持って15
-        private const val MAX_PLAYER_NUMBER = 15
+        //色の数の14
+        private const val MAX_PLAYER_NUMBER = 14
 
         private const val CURRENT_VALUE_KEY = "CurrentValue"
 

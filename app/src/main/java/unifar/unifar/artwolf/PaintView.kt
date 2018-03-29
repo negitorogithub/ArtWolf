@@ -53,7 +53,7 @@ class PaintView(context: Context, attributeSet: AttributeSet) :View(context, att
         currentPaint.style = Paint.Style.STROKE
         currentPaint.strokeJoin = Paint.Join.ROUND
         currentPaint.strokeCap = Paint.Cap.ROUND
-        currentPaint.strokeWidth = 4f
+        currentPaint.strokeWidth = 8f
         refreshStates()
 
     }

@@ -33,6 +33,8 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets, 
 
     private var playerNames: List<CharSequence> = listOf("")
     private var nextIPlayerIndex = 1
+    private var currentIPlayerIndex = 0
+
     private var colorKinds: Int = -1
     private var mListener: OnCanvasFinishListener? = null
 
@@ -79,7 +81,13 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets, 
             } else{
                 nextIPlayerIndex = 0
             }
-            (nextColorWidget as Button?)?.text = getString(R.string.change_to, playerNames.elementAt(nextIPlayerIndex))
+
+            if (currentIPlayerIndex < playerNames.size - 1 ) {
+                currentIPlayerIndex++
+            } else{
+                currentIPlayerIndex = 0
+            }
+            (nextColorWidget as Button?)?.text = getString(R.string.is_drawing, playerNames.elementAt(currentIPlayerIndex))
             paintView?.changeColorToNext()
             paintView?.currentPaint?.color?.let { thisWidget.setBackgroundColor(it) }
         }
@@ -89,7 +97,7 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets, 
             onFinishButtonPressed()
         }
         //初期設定
-        (nextColorWidget as Button?)?.text = getString(R.string.change_to, playerNames.elementAt(nextIPlayerIndex))
+        (nextColorWidget as Button?)?.text = getString(R.string.is_drawing, playerNames.elementAt(currentIPlayerIndex))
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
         onNotifyCanRedo(false)
         onNotifyCanUndo(false)
