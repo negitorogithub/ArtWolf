@@ -42,7 +42,7 @@
     <string name="please_choose_theme_mode">お題モードを選んでください</string>
     <string name="is_drawing">%1$sの番です</string>
     <string name="now_it_s_time_to_talking">誰が偽物かについて話し合いましょう。</string>
-
+    <string name="start">スタート</string>
     <string-array name="builtInThemes">
         <item>サッカー</item>
         <item>テニス</item>

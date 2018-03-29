@@ -2,6 +2,11 @@
     <string name="app_name">ArtWolf</string>
     <string name="appId">ca-app-pub-6418178360564076~9611371496</string>
 
+    <string name="title_banner_ad_id" translatable="false">ca-app-pub-6418178360564076/7166707379</string>
+    <string name="retry_inter_ad_id" translatable="false">ca-app-pub-6418178360564076/7663926046</string>
+    <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
+    <string name="editThemeSelectFragmentBannerAdId" translatable="false">ca-app-pub-6418178360564076/3743019021</string>
+
     <string name="artist">Painter</string>
     <string name="wolf">Impostor</string>
 
@@ -35,18 +40,15 @@
     <string name="themeShow">%1$s.</string>
     <string name="complete">complete</string>
     <string name="retry">Retry</string>
-    <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
     <string name="edit">edit</string>
     <string name="random">random</string>
     <string name="please_choose_theme_mode">Please choose theme mode</string>
-    <string name="editThemeSelectFragmentBannerAdId" translatable="false">ca-app-pub-6418178360564076/3743019021</string>
     <string name="theme">theme</string>
     <string name="please_fill_in_theme_field">Please fill in theme field</string>
-    <string name="back">back</string>
     <string name="is_drawing">%1$s is drawing</string>
     <string name="start">start</string>
-    <string name="title_banner_ad_id">ca-app-pub-6418178360564076/7166707379</string>
     <string name="now_it_s_time_to_talking">Now, it\'s time to talk about who impostor is.</string>
+
     <string-array name="builtInThemes">
         <item>soccer</item>
         <item>tennis</item>
