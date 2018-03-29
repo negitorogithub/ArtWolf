@@ -7,20 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.google.android.gms.ads.AdView
 
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [TitleFragment.OnTitleFragmentStartListener] interface
+ * [TallkTimeFragment.OnTalkTimeFragmentFinishListener] interface
  * to handle interaction events.
- * Use the [TitleFragment.newInstance] factory method to
+ * Use the [TallkTimeFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class TitleFragment : Fragment() {
-    private var listener: OnTitleFragmentStartListener? = null
+class TallkTimeFragment : Fragment() {
+    private var listener: OnTalkTimeFragmentFinishListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +30,25 @@ class TitleFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_title, container, false)
-        val startButton = view.findViewById<Button>(R.id.title_fragment_start_button)
-        startButton.setOnClickListener { onButtonPressed() }
-        val banner = view.findViewById<AdView>(R.id.title_fragment_banner)
-        banner.loadAd(MyApplication.adRequest)
+        val view = inflater.inflate(R.layout.fragment_tallk_time, container, false)
+        val finishButton = view.findViewById<Button>(R.id.talk_time_fragment_finish_button)
+        finishButton.setOnClickListener {
+            onButtonPressed()
+            fragmentManager.beginTransaction().remove(this).commit()
+        }
         return view
     }
 
     private fun onButtonPressed() {
-        listener?.onTitleFragmentStart()
+        listener?.onTalkTimeFragmentFinish()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnTitleFragmentStartListener) {
+        if (context is OnTalkTimeFragmentFinishListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnTitleFragmentStartListener")
+            throw RuntimeException(context.toString() + " must implement OnTalkTimeFragmentFinishListener")
         }
     }
 
@@ -68,8 +68,8 @@ class TitleFragment : Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-    interface OnTitleFragmentStartListener {
-        fun onTitleFragmentStart()
+    interface OnTalkTimeFragmentFinishListener {
+        fun onTalkTimeFragmentFinish()
     }
 
     companion object {
@@ -77,15 +77,14 @@ class TitleFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TitleFragment.
+         * @return A new instance of fragment TallkTimeFragment.
          */
         @JvmStatic
         fun newInstance() =
-                TitleFragment().apply {
+                TallkTimeFragment().apply {
                     arguments = Bundle().apply {
                     }
                 }
     }
 }
+

@@ -44,6 +44,9 @@
     <string name="please_fill_in_theme_field">Please fill in theme field</string>
     <string name="back">back</string>
     <string name="is_drawing">%1$s is drawing</string>
+    <string name="start">start</string>
+    <string name="title_banner_ad_id">ca-app-pub-6418178360564076/7166707379</string>
+    <string name="now_it_s_time_to_talking">Now, it\'s time to talk about who impostor is.</string>
     <string-array name="builtInThemes">
         <item>soccer</item>
         <item>tennis</item>

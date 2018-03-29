@@ -4,18 +4,23 @@ import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import hotchemi.android.rate.AppRate
+import android.text.style.TtsSpan
 import java.util.*
+import hotchemi.android.rate.OnClickButtonListener
+import hotchemi.android.rate.StoreType
 
 
-//TODO: CanvasFragmentのUndoRedoの適宜無効化
-//TODO: タイトルフラグメント
+
 
 class MainActivity :
         AppCompatActivity(),
+        TitleFragment.OnTitleFragmentStartListener,
         CanvasFragment.OnCanvasFinishListener,
         PlayerNumberDecideFragment.PlayerNumberReceiver,
         PlayerListFragment.OnPlayerInfoDecidedListener,
         ShowActsFragment.OnShowActFragmentFinishListener,
+        TallkTimeFragment.OnTalkTimeFragmentFinishListener,
         ConfirmFragment.OnFragmentInteractionListener,
         PlayerVoteFragment.OnPlayerVoteFragmentFinishListener,
         ResultFragment.OnFragmentInteractionListener,
@@ -27,8 +32,6 @@ class MainActivity :
         PaintView.CanReDoListener,
         PaintView.CanUnDoListener,
         IGameDataContain {
-
-
 
     private val mainActivityContainerResId = R.id.main_activity_container
     override var gameData: IGameData = GameData()
@@ -59,11 +62,17 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         setContentView(R.layout.activity_main)
-        savedInstanceState ?: replaceFragment(EditThemeSelectFragment.newInstance())
+        savedInstanceState ?: replaceFragment(TitleFragment.newInstance())
         savedInstanceState?.let { gameData = savedInstanceState.getSerializable(GAME_DATA_KEY) as IGameData}
         savedInstanceState?.let { showActIndex = savedInstanceState.getInt(SHOW_ACT_INDEX_KEY) }
         savedInstanceState?.let { playerVoteIndex = savedInstanceState.getInt(PLAYER_VOTE_KEY) }
+        AppRate.with(this)
+                .setInstallDays(5)
+                .setLaunchTimes(4)
+                .setRemindInterval(1)
+                .monitor()
 
+        AppRate.showRateDialogIfMeetsConditions(this)
     }
 
 
@@ -75,7 +84,9 @@ class MainActivity :
         outState?.putInt(PLAYER_VOTE_KEY, playerVoteIndex)
     }
 
-
+    override fun onTitleFragmentStart() {
+        replaceFragment(EditThemeSelectFragment.newInstance())
+    }
 
     override fun onEditThemeSelectFragmentRandom() {
         gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]
@@ -156,12 +167,18 @@ class MainActivity :
 
     override fun onCanvasFragmentFinish() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        replaceFragment(TallkTimeFragment.newInstance())
+    }
+
+
+    override fun onTalkTimeFragmentFinish() {
         val playerNames = ArrayList<kotlin.CharSequence>()
         gameData.allPlayers.mapTo(playerNames) { it.name}
         replaceFragment(
                 ConfirmFragment.newInstance(gameData.allPlayers.elementAt(playerVoteIndex).name.toString()),
                 PLAYER_VOTE_TAG)
     }
+
 
     override fun onPlayerVoteFragmentFinishListener(position: Int) {
         gameData.allPlayers.elementAt(playerVoteIndex).votedTo = gameData.allPlayers.elementAt(position)

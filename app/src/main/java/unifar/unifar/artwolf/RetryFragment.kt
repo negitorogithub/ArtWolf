@@ -31,7 +31,6 @@ class RetryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
         }
-        MobileAds.initialize(activity, getString(R.string.appId))
 
     }
 
