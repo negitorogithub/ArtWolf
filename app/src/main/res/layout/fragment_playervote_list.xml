@@ -12,6 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/smallButtonHeight"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/ok"
         android:textSize="@dimen/Regular_24"
         app:layout_constraintBottom_toBottomOf="parent"

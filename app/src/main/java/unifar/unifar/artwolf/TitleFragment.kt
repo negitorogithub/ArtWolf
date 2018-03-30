@@ -20,7 +20,9 @@ import com.google.android.gms.ads.AdView
  *
  */
 class TitleFragment : Fragment() {
-    private var listener: OnTitleFragmentStartListener? = null
+    private var startListener: OnTitleFragmentStartListener? = null
+    private var settingsListener: OnTitleFragmentSettingsListener? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,28 +35,42 @@ class TitleFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_title, container, false)
         val startButton = view.findViewById<Button>(R.id.title_fragment_start_button)
-        startButton.setOnClickListener { onButtonPressed() }
+        startButton.setOnClickListener { onStartButtonPressed() }
+        val settingsButton = view.findViewById<Button>(R.id.title_fragment_settings_button)
+        settingsButton.setOnClickListener { onSettingsButtonPressed() }
         val banner = view.findViewById<AdView>(R.id.title_fragment_banner)
         banner.loadAd(MyApplication.adRequest)
         return view
     }
 
-    private fun onButtonPressed() {
-        listener?.onTitleFragmentStart()
+    private fun onStartButtonPressed() {
+        startListener?.onTitleFragmentStart()
+    }
+
+
+    private fun onSettingsButtonPressed() {
+        settingsListener?.onTitleFragmentSettings()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnTitleFragmentStartListener) {
-            listener = context
+            startListener = context
         } else {
             throw RuntimeException(context.toString() + " must implement OnTitleFragmentStartListener")
+        }
+
+        if (context is OnTitleFragmentSettingsListener) {
+            settingsListener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnTitleFragmentSettingsListener")
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
+        startListener = null
+        settingsListener = null
     }
 
     /**
@@ -70,6 +86,10 @@ class TitleFragment : Fragment() {
      */
     interface OnTitleFragmentStartListener {
         fun onTitleFragmentStart()
+    }
+
+    interface OnTitleFragmentSettingsListener {
+        fun onTitleFragmentSettings()
     }
 
     companion object {
@@ -89,3 +109,4 @@ class TitleFragment : Fragment() {
                 }
     }
 }
+

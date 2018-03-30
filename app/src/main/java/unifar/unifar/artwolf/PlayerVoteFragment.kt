@@ -102,11 +102,9 @@ class PlayerVoteFragment : Fragment() {
 
     companion object {
 
-        // TODO: Customize parameter argument names
         private const val ARG_COLUMN_COUNT = "column-count"
         private const val PLAYER_NAME_COLLECTION_KEY = "playerNameCollectionKey"
         private const val LAST_SELECTED_POSITION_KEY = "lastSelectedPositionKey"
-        // TODO: Customize parameter initialization
         fun newInstance(columnCount: Int, playerNames : ArrayList<CharSequence>): PlayerVoteFragment {
             val fragment = PlayerVoteFragment()
             val args = Bundle()

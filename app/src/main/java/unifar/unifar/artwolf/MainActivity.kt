@@ -1,5 +1,6 @@
 package unifar.unifar.artwolf
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,8 @@ import java.util.*
 class MainActivity :
         AppCompatActivity(),
         TitleFragment.OnTitleFragmentStartListener,
+        TitleFragment.OnTitleFragmentSettingsListener,
+        SettingsFragment.OnSettingsFragmentFinishListener,
         CanvasFragment.OnCanvasFinishListener,
         PlayerNumberDecideFragment.PlayerNumberReceiver,
         PlayerListFragment.OnPlayerInfoDecidedListener,
@@ -29,6 +32,7 @@ class MainActivity :
         PaintView.CanReDoListener,
         PaintView.CanUnDoListener,
         IGameDataContain {
+
 
     private val mainActivityContainerResId = R.id.main_activity_container
     override var gameData: IGameData = GameData()
@@ -64,6 +68,13 @@ class MainActivity :
         savedInstanceState?.let { gameData = savedInstanceState.getSerializable(GAME_DATA_KEY) as IGameData}
         savedInstanceState?.let { showActIndex = savedInstanceState.getInt(SHOW_ACT_INDEX_KEY) }
         savedInstanceState?.let { playerVoteIndex = savedInstanceState.getInt(PLAYER_VOTE_KEY) }
+        val sharedPreferences = getSharedPreferences(Keys.ArtWolfSharedPreferenceKey.toString(), Context.MODE_PRIVATE)
+
+        //デフォルトでtrueになるように
+        sharedPreferences.edit()
+                .putBoolean(Keys.IsUsingSEKey.toString(), sharedPreferences.getBoolean(Keys.IsUsingSEKey.toString(), true))
+                .putBoolean(Keys.IsUsingBGMKey.toString(), sharedPreferences.getBoolean(Keys.IsUsingBGMKey.toString(), true)).apply()
+
         AppRate.with(this)
                 .setInstallDays(5)
                 .setLaunchTimes(4)
@@ -73,7 +84,7 @@ class MainActivity :
         AppRate.showRateDialogIfMeetsConditions(this)
 
         mInterstitialAd = InterstitialAd(this).apply {
-            adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            adUnitId = getString(R.string.retry_inter_ad_id)
             adListener = (object : AdListener() {
                 override fun onAdClosed() {
                     mInterstitialAd.loadAd(MyApplication.adRequest)
@@ -92,9 +103,20 @@ class MainActivity :
         outState?.putInt(PLAYER_VOTE_KEY, playerVoteIndex)
     }
 
+
     override fun onTitleFragmentStart() {
         replaceFragment(EditThemeSelectFragment.newInstance())
     }
+
+    override fun onTitleFragmentSettings() {
+        replaceFragment(SettingsFragment.newInstance())
+    }
+    override fun onSettingsFragmentFinish() {
+        replaceFragment(TitleFragment.newInstance())
+    }
+
+
+
 
     override fun onEditThemeSelectFragmentRandom() {
         gameData.theme = (resources.getStringArray(R.array.builtInThemes)).toList().shuffled()[0]

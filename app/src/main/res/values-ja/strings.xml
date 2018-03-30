@@ -133,4 +133,6 @@
         <item>スパゲッティ</item>
 
     </string-array>
+    <string name="settings">設定</string>
+    <string name="sound_effect">効果音</string>
 </resources>

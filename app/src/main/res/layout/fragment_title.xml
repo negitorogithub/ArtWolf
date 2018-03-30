@@ -34,6 +34,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <Button
+        android:id="@+id/title_fragment_settings_button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/mediumButtonHeight"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/settings"
+        android:textSize="@dimen/Regular_34"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_fragment_start_button" />
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/title_fragment_banner"
         android:layout_width="wrap_content"
@@ -46,4 +59,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@
     <string name="retry_inter_ad_id" translatable="false">ca-app-pub-6418178360564076/7663926046</string>
     <string name="retryFragmentBannerId">ca-app-pub-6418178360564076/5180601073</string>
     <string name="editThemeSelectFragmentBannerAdId" translatable="false">ca-app-pub-6418178360564076/3743019021</string>
+    <string name="fragment_settings_banner_id" translatable="false">ca-app-pub-6418178360564076/4013359606</string>
 
     <string name="artist">Painter</string>
     <string name="wolf">Impostor</string>
@@ -48,6 +49,9 @@
     <string name="is_drawing">%1$s is drawing</string>
     <string name="start">start</string>
     <string name="now_it_s_time_to_talking">Now, it\'s time to talk about who impostor is.</string>
+    <string name="settings">Settings</string>
+    <string name="sound_effect">Sound effect</string>
+    <string name="bgm">BGM</string>
 
     <string-array name="builtInThemes">
         <item>soccer</item>
