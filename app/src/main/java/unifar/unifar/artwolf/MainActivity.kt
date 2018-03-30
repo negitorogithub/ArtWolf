@@ -2,9 +2,11 @@ package unifar.unifar.artwolf
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.media.MediaPlayer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.widget.Toast
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.InterstitialAd
 import hotchemi.android.rate.AppRate
@@ -60,6 +62,8 @@ class MainActivity :
     init {
     }
 
+    private lateinit var mediaPlayer: MediaPlayer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -75,6 +79,18 @@ class MainActivity :
                 .putBoolean(Keys.IsUsingSEKey.toString(), sharedPreferences.getBoolean(Keys.IsUsingSEKey.toString(), true))
                 .putBoolean(Keys.IsUsingBGMKey.toString(), sharedPreferences.getBoolean(Keys.IsUsingBGMKey.toString(), true)).apply()
 
+
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(
+                    assets.openFd("sounds/genei.mp3").fileDescriptor,
+                    assets.openFd("sounds/genei.mp3").startOffset,
+                    assets.openFd("sounds/genei.mp3").length)
+
+            prepare()
+            start()
+            isLooping = true
+
+        }
         AppRate.with(this)
                 .setInstallDays(5)
                 .setLaunchTimes(4)
@@ -94,8 +110,21 @@ class MainActivity :
         mInterstitialAd.loadAd(MyApplication.adRequest)
     }
 
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.pause()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer.start()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+
+    }
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putSerializable(GAME_DATA_KEY, gameData)
@@ -280,5 +309,8 @@ class MainActivity :
                 fragment,
                 tag
         ).commit()
+    }
+    override fun onBackPressed() {
+        Toast.makeText(this, getString(R.string.back_button_is_disabled), Toast.LENGTH_SHORT).show()
     }
 }

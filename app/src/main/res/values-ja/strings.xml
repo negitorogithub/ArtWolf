@@ -43,6 +43,9 @@
     <string name="is_drawing">%1$sの番です</string>
     <string name="now_it_s_time_to_talking">誰が偽物かについて話し合いましょう。</string>
     <string name="start">スタート</string>
+    <string name="settings">設定</string>
+    <string name="sound_effect">効果音</string>
+    <string name="back_button_is_disabled">ごめんなさい、戻るボタンは無効になっています</string>
     <string-array name="builtInThemes">
         <item>サッカー</item>
         <item>テニス</item>
@@ -133,6 +136,4 @@
         <item>スパゲッティ</item>
 
     </string-array>
-    <string name="settings">設定</string>
-    <string name="sound_effect">効果音</string>
 </resources>

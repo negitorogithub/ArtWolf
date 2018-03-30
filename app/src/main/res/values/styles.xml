@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/cb2ea6ac9715c8dae3bfaab6c15acc1d_m_xxhdpi</item>
         <item name="android:fontFamily">@font/tanuki_magic</item>
+        <item name="android:soundEffectsEnabled">true</item>
     </style>
 
 </resources>
