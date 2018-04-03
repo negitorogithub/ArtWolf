@@ -43,10 +43,12 @@ class RetryFragment : Fragment() {
         val finishButton = view.findViewById<Button>(R.id.fragment_retry_finish_button)
         finishButton.setOnClickListener{
             onFinishButtonPressed()
+            MainActivity.playSe(context)
         }
         val retryButton = view.findViewById<Button>(R.id.fragment_retry_retry_button)
         retryButton.setOnClickListener {
             onRetryButtonPressed()
+            MainActivity.playSe(context)
         }
 
         return view

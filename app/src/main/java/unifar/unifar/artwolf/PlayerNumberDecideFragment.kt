@@ -30,6 +30,7 @@ class PlayerNumberDecideFragment : Fragment() {
         finishButton.setOnClickListener { _ ->
             playerNumberReceiver?.onValueDecided(playerNumber)
             fragmentManager.beginTransaction().remove(this).commit()
+            MainActivity.playSe(context)
         }
 
         playerNumberPicker = view.findViewById(R.id.playerNumberPicker)

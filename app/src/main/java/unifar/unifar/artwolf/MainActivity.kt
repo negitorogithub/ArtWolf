@@ -2,10 +2,15 @@ package unifar.unifar.artwolf
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.SoundPool
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.InterstitialAd
@@ -33,6 +38,7 @@ class MainActivity :
         EditThemeFragment.OnEditThemeFragmentFinishListener,
         PaintView.CanReDoListener,
         PaintView.CanUnDoListener,
+        SoundPoolDataHolder,
         IGameDataContain {
 
 
@@ -40,7 +46,20 @@ class MainActivity :
     override var gameData: IGameData = GameData()
     private val fragmentManager = supportFragmentManager
     private lateinit var mInterstitialAd: InterstitialAd
-
+    override var soundPoolId: Int = -1
+    override var soundPool: SoundPool = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        SoundPool.Builder()
+                .setAudioAttributes(
+                        AudioAttributes.Builder()
+                                .setUsage(AudioAttributes.USAGE_GAME)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                .build()
+                )
+                .setMaxStreams(3)
+                .build()
+    }else{
+        SoundPool(3, AudioManager.STREAM_MUSIC, 0)
+    }
     // paintViewからの通知がこっちに飛んでくるため
     private lateinit var canvasFragment: CanvasFragment
 
@@ -57,9 +76,28 @@ class MainActivity :
         private const val GAME_DATA_KEY      = "gameDataKey"
         private const val SHOW_ACT_INDEX_KEY = "showActIndexKey"
         private const val PLAYER_VOTE_KEY    = "playerVoteKey"
+
+        fun playSe(context: Context) {
+            if (context is SoundPoolDataHolder) {
+                if (context.getSharedPreferences(Keys.ArtWolfSharedPreferenceKey.toString(), Context.MODE_PRIVATE).getBoolean(Keys.IsUsingSEKey.toString(), true)) {
+                    context.soundPool.play(
+                            context.soundPoolId,
+                            1.0f,
+                            1.0f,
+                            0,
+                            0,
+                            1.0f
+                    )
+                }
+            }else{
+                throw RuntimeException(context.toString() + " must implement SoundPoolDataHolder")
+            }
+        }
     }
 
     init {
+        soundPool.setOnLoadCompleteListener { _ , _, _ -> Log.d("artWolf","Loaded") }
+
     }
 
     private lateinit var mediaPlayer: MediaPlayer
@@ -85,12 +123,13 @@ class MainActivity :
                     assets.openFd("sounds/genei.mp3").fileDescriptor,
                     assets.openFd("sounds/genei.mp3").startOffset,
                     assets.openFd("sounds/genei.mp3").length)
-
+            setVolume(0.5f, 0.5f)
             prepare()
-            start()
             isLooping = true
-
         }
+
+        soundPoolId = soundPool.load(this, R.raw.cursor1, 1)
+
         AppRate.with(this)
                 .setInstallDays(5)
                 .setLaunchTimes(4)
@@ -123,7 +162,8 @@ class MainActivity :
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
-
+        soundPool.unload(soundPoolId)
+        soundPool.release()
     }
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
@@ -141,7 +181,16 @@ class MainActivity :
         replaceFragment(SettingsFragment.newInstance())
     }
     override fun onSettingsFragmentFinish() {
-        replaceFragment(TitleFragment.newInstance())
+        if(! getSharedPreferences(Keys.ArtWolfSharedPreferenceKey.toString(), Context.MODE_PRIVATE).getBoolean(Keys.IsUsingBGMKey.toString(), true)) {
+            mediaPlayer.pause()
+        }else{
+            //中断しないように
+            if (!mediaPlayer.isPlaying){
+                mediaPlayer.start()
+            }
+        }
+            replaceFragment(TitleFragment.newInstance())
+
     }
 
 
@@ -313,4 +362,5 @@ class MainActivity :
     override fun onBackPressed() {
         Toast.makeText(this, getString(R.string.back_button_is_disabled), Toast.LENGTH_SHORT).show()
     }
+
 }

@@ -61,6 +61,7 @@ class PlayerVoteFragment : Fragment() {
             }else{
                 Toast.makeText(activity, getString(R.string.you_must_choose_person), Toast.LENGTH_LONG).show()
             }
+            MainActivity.playSe(context)
 
         }
 

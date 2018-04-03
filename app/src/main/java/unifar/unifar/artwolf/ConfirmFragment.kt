@@ -34,7 +34,9 @@ class ConfirmFragment : Fragment() {
         val nameTextView = view.findViewById<TextView>(R.id.fragment_confirm_player_name)
         nameTextView.text = getString(R.string.are_you, name)
         val finishButton = view.findViewById<Button>(R.id.fragment_confirm_player_finish_button)
-        finishButton.setOnClickListener{onButtonPressed()}
+        finishButton.setOnClickListener{
+            onButtonPressed()
+            MainActivity.playSe(context)}
         return view
     }
 

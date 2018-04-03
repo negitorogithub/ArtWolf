@@ -33,9 +33,14 @@ class EditThemeSelectFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_edit_theme_select, container, false)
         val editButton = view.findViewById<Button>(R.id.edit_theme_select_edit)
-        editButton.setOnClickListener { onEditButtonPressed() }
+        editButton.setOnClickListener {
+            onEditButtonPressed()
+            MainActivity.playSe(context)}
         val randomButton = view.findViewById<Button>(R.id.edit_theme_select_random)
-        randomButton.setOnClickListener{ onRondomButtonPressed()}
+        randomButton.setOnClickListener{
+            onRondomButtonPressed()
+            MainActivity.playSe(context)
+        }
         return view
     }
 

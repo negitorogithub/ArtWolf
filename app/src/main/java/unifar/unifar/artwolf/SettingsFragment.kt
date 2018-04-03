@@ -35,7 +35,7 @@ class SettingsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
         val banner = view.findViewById<AdView>(R.id.fragment_settings_banner)
         banner.loadAd(MyApplication.adRequest)
-        val sharedPreferences = context.getSharedPreferences(Keys.IsUsingSEKey.toString(), Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences(Keys.ArtWolfSharedPreferenceKey.toString(), Context.MODE_PRIVATE)
         val seSwitch = view.findViewById<Switch>(R.id.fragment_settings_se_switch)
         seSwitch.isChecked = sharedPreferences.getBoolean(Keys.IsUsingSEKey.toString(), true)
         seSwitch.setOnCheckedChangeListener({
@@ -46,7 +46,9 @@ class SettingsFragment : Fragment() {
         bgmSwitch.setOnCheckedChangeListener({
             _, isChecked -> sharedPreferences.edit().putBoolean(Keys.IsUsingBGMKey.toString(), isChecked).apply()
         })
-        view.findViewById<Button>(R.id.fragment_settings_finish_button).setOnClickListener { onButtonPressed() }
+        view.findViewById<Button>(R.id.fragment_settings_finish_button).setOnClickListener {
+            onButtonPressed()
+            MainActivity.playSe(context)}
         return view
     }
 

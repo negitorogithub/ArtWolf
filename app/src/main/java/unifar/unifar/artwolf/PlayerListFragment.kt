@@ -63,6 +63,7 @@ class PlayerListFragment : Fragment() {
         finishButton.setOnClickListener {
             fragmentManager.beginTransaction().remove(this).commit()
             mListener?.onPlayerInfoDecided(myIPlayerRecyclerViewAdapter.allNames)
+            MainActivity.playSe(context)
         }
 
         return view

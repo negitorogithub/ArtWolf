@@ -35,9 +35,13 @@ class TitleFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_title, container, false)
         val startButton = view.findViewById<Button>(R.id.title_fragment_start_button)
-        startButton.setOnClickListener { onStartButtonPressed() }
+        startButton.setOnClickListener {
+            onStartButtonPressed()
+            MainActivity.playSe(context)}
         val settingsButton = view.findViewById<Button>(R.id.title_fragment_settings_button)
-        settingsButton.setOnClickListener { onSettingsButtonPressed() }
+        settingsButton.setOnClickListener {
+            onSettingsButtonPressed()
+            MainActivity.playSe(context)}
         val banner = view.findViewById<AdView>(R.id.title_fragment_banner)
         banner.loadAd(MyApplication.adRequest)
         return view

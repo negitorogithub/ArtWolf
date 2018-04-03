@@ -37,6 +37,7 @@ class TalkTimeFragment : Fragment() {
         finishButton.setOnClickListener {
             onButtonPressed()
             fragmentManager.beginTransaction().remove(this).commit()
+            MainActivity.playSe(context)
         }
 
         return view

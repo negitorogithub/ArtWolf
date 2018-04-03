@@ -61,6 +61,7 @@ class ResultFragment : Fragment(){
         val finishButton = view.findViewById<Button>(R.id.resultFragmentFinishButton)
         finishButton.setOnClickListener{
             onButtonPressed(isReversedCheckBox.isChecked)
+            MainActivity.playSe(context)
         }
         return view
     }

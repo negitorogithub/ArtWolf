@@ -73,8 +73,14 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets, 
 
 
         paintView?.currentPaint?.color?.let { nextColorWidget?.setBackgroundColor(it) }
-        undoWidget?.setOnClickListener { _ -> paintView?.undo() }
-        redoWidget?.setOnClickListener {_ -> paintView?.redo() }
+        undoWidget?.setOnClickListener { _ ->
+            paintView?.undo()
+            //TODO 特殊サウンド
+        }
+        redoWidget?.setOnClickListener {_ ->
+            paintView?.redo()
+            //TODO 特殊サウンド
+             }
         nextColorWidget?.setOnClickListener { thisWidget ->
             if (playerNames.size -1 > nextIPlayerIndex) {
                 nextIPlayerIndex++
@@ -88,11 +94,13 @@ class CanvasFragment : Fragment(), IServeITrajectories, ICanvasFragmentWidgets, 
                 currentIPlayerIndex = 0
             }
             (nextColorWidget as Button?)?.text = getString(R.string.is_drawing, playerNames.elementAt(currentIPlayerIndex))
+            MainActivity.playSe(context)
             paintView?.changeColorToNext()
             paintView?.currentPaint?.color?.let { thisWidget.setBackgroundColor(it) }
         }
         val finishButton = thisView.findViewById<ImageView>(R.id.canvas_fragment_finish_button)
         finishButton.setOnClickListener{
+            MainActivity.playSe(context)
             fragmentManager.beginTransaction().detach(this).commit()
             onFinishButtonPressed()
         }

@@ -37,7 +37,10 @@ class EditThemeFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_edit_theme, container, false)
         val editText = view.findViewById<TextInputEditText>(R.id.fragment_edit_theme_edit_Text)
         val finishButton = view.findViewById<Button>(R.id.fragment_edit_theme_finish_button)
-        finishButton.setOnClickListener{onFinishButtonPressed(editText.text)}
+        finishButton.setOnClickListener{
+            onFinishButtonPressed(editText.text)
+            MainActivity.playSe(context)
+        }
         return view
     }
 

@@ -52,7 +52,9 @@ class ShowActsFragment : Fragment() {
         sb.append(getString(R.string.respected_end_chars))
         nameView.text = sb
         val finishButton = view.findViewById<Button>(R.id.fragment_show_act_finish_button)
-        finishButton.setOnClickListener { onFinishButtonPressed() }
+        finishButton.setOnClickListener {
+            onFinishButtonPressed()
+            MainActivity.playSe(context)}
         val detailTextView = view.findViewById<TextView>(R.id.act_detail_and_theme_text)
         when (act) {
             Acts.Artist.toString(resources) ->  {
